@@ -1,0 +1,914 @@
+{
+  "Fix": "03-daily-counts-sargable",
+  "Title": "Month report: live procedure before and after final.sql",
+  "MeasuredAt": "2026-10-30 16:53",
+  "Runs": 5,
+  "ApplySeconds": 0.0,
+  "Method": "Median of warm runs, SET STATISTICS IO, TIME. Identity: EXCEPT both ways on every row, row order included.",
+  "AllIdentical": true,
+  "Calls": [
+    {
+      "Label": "2008-07 (data starts 31st)",
+      "BeforeSql": "EXEC app.GetDailyPostCounts @Year = 2008, @Month = 7",
+      "AfterSql": "EXEC app.GetDailyPostCounts @Year = 2008, @Month = 7",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 8330.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 172.0,
+        "ElapsedMs": 172.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 156,
+            "ElapsedMs": 160,
+            "ClientMs": 161,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 166,
+            "ClientMs": 167,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 183,
+            "ClientMs": 184,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 174,
+            "ClientMs": 175,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 171,
+            "ElapsedMs": 172,
+            "ClientMs": 173,
+            "Rows": 1
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 4.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          }
+        ]
+      },
+      "ReadsCutPct": 100.0,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 100.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "2008-07 (data starts 31st)",
+        "RowsBefore": 1,
+        "RowsAfter": 1,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -272728260,
+        "ChecksumAfter": -272728260,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "2008-08",
+      "BeforeSql": "EXEC app.GetDailyPostCounts @Year = 2008, @Month = 8",
+      "AfterSql": "EXEC app.GetDailyPostCounts @Year = 2008, @Month = 8",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 8330.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 171.0,
+        "ElapsedMs": 164.0,
+        "Rows": 31,
+        "Detail": [
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 172,
+            "ClientMs": 173,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 172,
+            "ClientMs": 173,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 156,
+            "ElapsedMs": 159,
+            "ClientMs": 161,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 157,
+            "ElapsedMs": 164,
+            "ClientMs": 165,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 171,
+            "ElapsedMs": 162,
+            "ClientMs": 163,
+            "Rows": 31
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 47.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 2.0,
+        "Rows": 31,
+        "Detail": [
+          {
+            "LogicalReads": 47,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 2,
+            "ClientMs": 3,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 47,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 2,
+            "ClientMs": 3,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 47,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 2,
+            "ClientMs": 3,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 47,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 2,
+            "ClientMs": 3,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 47,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 2,
+            "ClientMs": 3,
+            "Rows": 31
+          }
+        ]
+      },
+      "ReadsCutPct": 99.4,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 98.8,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "2008-08",
+        "RowsBefore": 31,
+        "RowsAfter": 31,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -1780650585,
+        "ChecksumAfter": -1780650585,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "2009-02 (28 days)",
+      "BeforeSql": "EXEC app.GetDailyPostCounts @Year = 2009, @Month = 2",
+      "AfterSql": "EXEC app.GetDailyPostCounts @Year = 2009, @Month = 2",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 8330.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 187.0,
+        "ElapsedMs": 186.0,
+        "Rows": 28,
+        "Detail": [
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 187,
+            "ElapsedMs": 185,
+            "ClientMs": 186,
+            "Rows": 28
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 189,
+            "ClientMs": 190,
+            "Rows": 28
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 188,
+            "ElapsedMs": 201,
+            "ClientMs": 202,
+            "Rows": 28
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 187,
+            "ElapsedMs": 186,
+            "ClientMs": 187,
+            "Rows": 28
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 141,
+            "ElapsedMs": 186,
+            "ClientMs": 187,
+            "Rows": 28
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 175.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 10.0,
+        "Rows": 28,
+        "Detail": [
+          {
+            "LogicalReads": 175,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 28
+          },
+          {
+            "LogicalReads": 175,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 28
+          },
+          {
+            "LogicalReads": 175,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 28
+          },
+          {
+            "LogicalReads": 175,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 28
+          },
+          {
+            "LogicalReads": 175,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 28
+          }
+        ]
+      },
+      "ReadsCutPct": 97.9,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 94.6,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "2009-02 (28 days)",
+        "RowsBefore": 28,
+        "RowsAfter": 28,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -1610363197,
+        "ChecksumAfter": -1610363197,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "2010-06",
+      "BeforeSql": "EXEC app.GetDailyPostCounts @Year = 2010, @Month = 6",
+      "AfterSql": "EXEC app.GetDailyPostCounts @Year = 2010, @Month = 6",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 8330.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 219.0,
+        "ElapsedMs": 229.0,
+        "Rows": 30,
+        "Detail": [
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 235,
+            "ElapsedMs": 238,
+            "ClientMs": 238,
+            "Rows": 30
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 219,
+            "ElapsedMs": 229,
+            "ClientMs": 230,
+            "Rows": 30
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 218,
+            "ElapsedMs": 228,
+            "ClientMs": 229,
+            "Rows": 30
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 188,
+            "ElapsedMs": 216,
+            "ClientMs": 217,
+            "Rows": 30
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 219,
+            "ElapsedMs": 235,
+            "ClientMs": 236,
+            "Rows": 30
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 392.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 16.0,
+        "ElapsedMs": 24.0,
+        "Rows": 30,
+        "Detail": [
+          {
+            "LogicalReads": 392,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 23,
+            "ClientMs": 24,
+            "Rows": 30
+          },
+          {
+            "LogicalReads": 392,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 31,
+            "ElapsedMs": 23,
+            "ClientMs": 24,
+            "Rows": 30
+          },
+          {
+            "LogicalReads": 392,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 24,
+            "ClientMs": 34,
+            "Rows": 30
+          },
+          {
+            "LogicalReads": 392,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 31,
+            "ElapsedMs": 24,
+            "ClientMs": 25,
+            "Rows": 30
+          },
+          {
+            "LogicalReads": 392,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 24,
+            "ClientMs": 25,
+            "Rows": 30
+          }
+        ]
+      },
+      "ReadsCutPct": 95.3,
+      "CpuCutPct": 92.7,
+      "ElapsedCutPct": 89.5,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "2010-06",
+        "RowsBefore": 30,
+        "RowsAfter": 30,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -503078152,
+        "ChecksumAfter": -503078152,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "2010-12 (last month)",
+      "BeforeSql": "EXEC app.GetDailyPostCounts @Year = 2010, @Month = 12",
+      "AfterSql": "EXEC app.GetDailyPostCounts @Year = 2010, @Month = 12",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 8330.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 203.0,
+        "ElapsedMs": 237.0,
+        "Rows": 31,
+        "Detail": [
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 263,
+            "CpuMs": 203,
+            "ElapsedMs": 239,
+            "ClientMs": 240,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 263,
+            "CpuMs": 203,
+            "ElapsedMs": 233,
+            "ClientMs": 233,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 263,
+            "CpuMs": 234,
+            "ElapsedMs": 234,
+            "ClientMs": 235,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 263,
+            "CpuMs": 188,
+            "ElapsedMs": 239,
+            "ClientMs": 240,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 263,
+            "CpuMs": 187,
+            "ElapsedMs": 237,
+            "ClientMs": 238,
+            "Rows": 31
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 478.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 16.0,
+        "ElapsedMs": 28.0,
+        "Rows": 31,
+        "Detail": [
+          {
+            "LogicalReads": 478,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 28,
+            "ClientMs": 29,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 478,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 31,
+            "ElapsedMs": 28,
+            "ClientMs": 29,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 478,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 31,
+            "ElapsedMs": 28,
+            "ClientMs": 29,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 478,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 29,
+            "ClientMs": 29,
+            "Rows": 31
+          },
+          {
+            "LogicalReads": 478,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 27,
+            "ClientMs": 28,
+            "Rows": 31
+          }
+        ]
+      },
+      "ReadsCutPct": 94.3,
+      "CpuCutPct": 92.1,
+      "ElapsedCutPct": 88.2,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "2010-12 (last month)",
+        "RowsBefore": 31,
+        "RowsAfter": 31,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -1135625342,
+        "ChecksumAfter": -1135625342,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "2011-01 (no data)",
+      "BeforeSql": "EXEC app.GetDailyPostCounts @Year = 2011, @Month = 1",
+      "AfterSql": "EXEC app.GetDailyPostCounts @Year = 2011, @Month = 1",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 8330.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 140.0,
+        "ElapsedMs": 159.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 140,
+            "ElapsedMs": 161,
+            "ClientMs": 162,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 125,
+            "ElapsedMs": 156,
+            "ClientMs": 157,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 157,
+            "ElapsedMs": 159,
+            "ClientMs": 160,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 140,
+            "ElapsedMs": 152,
+            "ClientMs": 153,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 125,
+            "ElapsedMs": 159,
+            "ClientMs": 160,
+            "Rows": 0
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 4.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          }
+        ]
+      },
+      "ReadsCutPct": 100.0,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 100.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "2011-01 (no data)",
+        "RowsBefore": 0,
+        "RowsAfter": 0,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": null,
+        "ChecksumAfter": null,
+        "Identical": true,
+        "EmptyBothSides": true
+      }
+    },
+    {
+      "Label": "month 13 (invalid)",
+      "BeforeSql": "EXEC app.GetDailyPostCounts @Year = 2010, @Month = 13",
+      "AfterSql": "EXEC app.GetDailyPostCounts @Year = 2010, @Month = 13",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 8330.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 187.0,
+        "ElapsedMs": 206.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 188,
+            "ElapsedMs": 193,
+            "ClientMs": 194,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 198,
+            "ClientMs": 199,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 211,
+            "ClientMs": 212,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 219,
+            "ElapsedMs": 208,
+            "ClientMs": 209,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 8330,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 187,
+            "ElapsedMs": 206,
+            "ClientMs": 207,
+            "Rows": 0
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 0.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 0,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 0,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 0,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 0,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 0,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          }
+        ]
+      },
+      "ReadsCutPct": 100.0,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 100.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "month 13 (invalid)",
+        "RowsBefore": 0,
+        "RowsAfter": 0,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": null,
+        "ChecksumAfter": null,
+        "Identical": true,
+        "EmptyBothSides": true
+      }
+    }
+  ]
+}
