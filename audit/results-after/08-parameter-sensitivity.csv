@@ -1,0 +1,4 @@
+"object_name","query_id","plan_id","executions","min_reads","avg_reads","max_reads","min_duration_ms","max_duration_ms","max_to_min_ratio"
+"app.GetUserProfile","4","4","15353","3","306","100425","0.0","564.2","33475"
+"app.GetPostVoteCounts","8","8","41000","3","8","839","0.0","10.3","279"
+"app.GetQuestionPage","7","7","41000","3","19","552","0.0","289.7","184"

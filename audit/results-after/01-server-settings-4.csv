@@ -1,0 +1,5 @@
+"name","value","value_for_secondary"
+"MAXDOP","0",""
+"LEGACY_CARDINALITY_ESTIMATION","False",""
+"PARAMETER_SNIFFING","True",""
+"QUERY_OPTIMIZER_HOTFIXES","False",""

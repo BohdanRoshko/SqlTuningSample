@@ -1,0 +1,7 @@
+"name","value_in_use","configured_value","note"
+"cost threshold for parallelism","5","5","Default 5 sends small queries parallel."
+"max degree of parallelism","0","0","0 means one query can use every core."
+"max server memory (MB)","2147483647","2147483647","Leave room for the OS. 2147483647 means no cap."
+"min server memory (MB)","16","0",""
+"optimize for ad hoc workloads","0","0","Keeps single-use ad hoc plans small."
+"remote admin connections","0","0",""

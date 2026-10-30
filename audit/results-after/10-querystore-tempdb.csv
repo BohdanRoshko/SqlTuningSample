@@ -1,0 +1,4 @@
+"object_name","query_id","executions","tempdb_mb_total","tempdb_mb_max_one_call"
+"app.GetTopAnswersByTag","14","2026","28579","43.0"
+"app.GetTopAnswerers","12","2060","159","9.6"
+"(ad hoc)","28","1","2","1.8"

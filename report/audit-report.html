@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL Server Performance Audit</title>
+<style>
+  :root { --ink:#1d2433; --muted:#5b6475; --line:#d9dee7; --soft:#f4f6f9; --accent:#1f5fae; --good:#1d7a4a; --warn:#a15c00; --bad:#b3261e; }
+  * { box-sizing: border-box; }
+  html { background:#fff; }
+  body { margin:0; color:var(--ink); background:#fff; font: 15px/1.55 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 28px; line-height:1.2; margin: 0 0 6px; }
+  h2 { font-size: 20px; margin: 40px 0 12px; padding-top: 8px; border-top: 2px solid var(--ink); }
+  h3 { font-size: 16px; margin: 28px 0 8px; }
+  p { margin: 0 0 10px; }
+  .meta { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+  .tiles { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 18px 0 8px; }
+  .tile { border:1px solid var(--line); border-radius:8px; padding:12px 14px; background:var(--soft); }
+  .tile .k { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .tile .v { font-size: 22px; font-weight: 600; margin-top: 2px; }
+  .tile .s { font-size: 13px; color: var(--muted); }
+  .table-wrap { overflow-x: auto; margin: 8px 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--soft); font-weight: 600; }
+  table.nums td:not(:first-child), table.nums th:not(:first-child) { text-align: right; white-space: nowrap; }
+  tr.total td { font-weight: 600; border-top: 2px solid var(--line); }
+  .rank { font-weight: 700; color: var(--accent); }
+  .fix { border:1px solid var(--line); border-radius:8px; padding: 4px 18px 10px; margin: 18px 0; break-inside: avoid-page; }
+  .facts { display:grid; grid-template-columns: 150px 1fr; gap: 4px 14px; font-size: 14px; margin: 10px 0; }
+  .facts div:nth-child(odd) { color: var(--muted); }
+  .ok { color: var(--good); font-weight: 600; }
+  .note { font-size: 13px; color: var(--muted); }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 12.5px; background: var(--soft); padding: 1px 4px; border-radius: 3px; }
+  ul { margin: 0 0 10px; padding-left: 20px; }
+  li { margin: 3px 0; }
+  @media print {
+    main { padding: 0; max-width: none; }
+    body { font-size: 11pt; }
+    h2 { break-before: auto; }
+    .fix, table, .tiles { break-inside: avoid; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>SQL Server Performance Audit</h1>
+<div class="meta">Sample engagement on public data &middot; StackOverflow2010 database &middot; SQL Server 2025 (17.0.1000.7) Express Edition (64-bit) &middot; baseline captured 2026-10-30 16:51</div>
+
+<h2>Summary</h2>
+<p><strong>Six changes cut the CPU of the app's calls by 89% and their logical reads by 95%. In the same 20 minutes, the same four workers finished 12 times as many calls.</strong>
+No query returns a different answer: 34 test calls were compared row by row before and after.</p>
+<p>Two procedures used 93% of all CPU. The tag page read the whole 6.6 GB posts table on every call. The vote counter scanned all 10 million votes to count the votes of one post.
+Both now read a small index. Page views no longer wait behind the tag page: their writes waited 633 ms on average before, and 0 ms after.</p>
+<p>All six changes are indexes or small procedure edits. None needs an application release. Each one has a rollback script. Most of them touch objects the app vendor owns, so section 5 lists what to clear with them first.</p>
+
+<div class="tiles">
+  <div class="tile"><div class="k">CPU for the baseline's calls</div><div class="v">1932.8 s &rarr; 206.7 s</div><div class="s">89% less</div></div>
+  <div class="tile"><div class="k">Logical reads, same calls</div><div class="v">550M &rarr; 29M</div><div class="s">95% less</div></div>
+  <div class="tile"><div class="k">Calls done in 20 minutes</div><div class="v">14,846 &rarr; 184,662</div><div class="s">4 workers, same mix, no pauses</div></div>
+  <div class="tile"><div class="k">Time waiting on locks</div><div class="v">2,142 s &rarr; 0 s</div><div class="s">server wait stats, 20 minutes</div></div>
+</div>
+
+<h2>1. Findings, ranked by impact</h2>
+<p>Ranked by share of server time in the baseline run, then by the worst wait a user can hit. Shares come from Query Store over the 20-minute workload.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Finding</th><th>Evidence</th><th>Fix</th><th>Effort</th></tr></thead>
+<tbody>
+<tr><td class="rank">1</td><td>Search and the tag page read the whole posts table. The tag page also blocks page-view writes while it runs.</td><td>47.5% + 1.9% of CPU, 64% of reads. Lock waits were 74% of all waits.</td><td>Fix 04: a narrow index for both, two columns added to an existing index</td><td>2 index changes, 22 s build</td></tr>
+<tr><td class="rank">2</td><td>The vote counter scans all votes for every question page.</td><td>45.2% of CPU, 46,709 reads per call. Top missing-index hint.</td><td>Fix 01: index on votes by post</td><td>1 index, 14 s build</td></tr>
+<tr><td class="rank">3</td><td>The top answerers report reuses whatever plan the first call compiled. A year after a day takes seconds instead of milliseconds.</td><td>Worst call 11,322,489 reads and 13.8 s, best call 8,760 reads, same plan.</td><td>Fix 05: one column added to the index from fix 04</td><td>1 index change, 77 s build</td></tr>
+<tr><td class="rank">4</td><td>The CRM lookup converts every row of its index from varchar to nvarchar.</td><td>2.3% of CPU, 974 reads per call for one row. The plan carries a conversion warning.</td><td>Fix 02: convert the parameter, not the column</td><td>2 lines in 1 procedure</td></tr>
+<tr><td class="rank">5</td><td>The month report wraps the date column in YEAR() and MONTH(), so it cannot seek.</td><td>1.7% of CPU, 8,346 reads for any month.</td><td>Fix 03: a plain date range</td><td>4 lines in 1 procedure</td></tr>
+<tr><td class="rank">6</td><td>One vendor index is never read, but every page view and vote updates it.</td><td>0 reads, 3,735 writes, 94 MB.</td><td>Fix 06: drop it</td><td>1 statement</td></tr>
+<tr><td class="rank">7</td><td>AUTO_CLOSE is on. The database shuts down when the last connection leaves.</td><td>11 database starts in 28 minutes, no server restart. Each start empties the cache and the index counters.</td><td>Fix 00: turn it off</td><td>1 setting</td></tr>
+<tr><td class="rank">8</td><td>The profile page does a key lookup for every post of the user.</td><td>0.05% of CPU. Up to 41,629 reads for the heaviest users.</td><td>Not fixed. Too small to be worth a wider index today.</td><td>Revisit if traffic grows</td></tr>
+</tbody></table></div>
+
+<h2>2. The fixes</h2>
+<p>Each fix was measured the same way: one warm-up call, then the median of five calls, from <code>SET STATISTICS IO, TIME</code>. CPU time comes in steps of about 16 ms, so 0 ms means less than one step. Every row each call returned was saved before and after the change and compared in SQL with <code>EXCEPT</code> both ways. The fixes are numbered in the order they were applied.</p>
+
+<div class="fix">
+<h3>Fix 01. Index the votes by post</h3>
+<p>Every question page shows a vote breakdown. To count the votes of one post, SQL Server read all 10 million votes. The fix is one index on <code>Votes (PostId, VoteTypeId)</code>.</p>
+<div class="facts">
+<div>Result</div><div>46,714 reads &rarr; 15 for the most-voted post. 250 ms CPU &rarr; 0 ms.</div>
+<div>Cost</div><div>14 s to build. A vote insert reads 10 pages before and 13 after.</div>
+<div>Proof</div><div class="ok">Same result: 5 of 5 calls identical, 7 rows compared with EXCEPT both ways, row order included. 2 calls return no rows on both sides; they show cost only, not identity.</div>
+<div>Files</div><div><code>fixes/01-votes-postid-index/</code></div>
+</div>
+<div class="table-wrap"><table class="nums"><thead><tr><th>Test call</th><th>Reads before</th><th>Reads after</th><th>CPU before</th><th>CPU after</th><th>Elapsed before</th><th>Elapsed after</th><th>Rows</th><th>Same</th></tr></thead><tbody><tr><td>post with most votes (4,504)</td><td>46,714</td><td>15</td><td>250 ms</td><td>0 ms</td><td>258 ms</td><td>0 ms</td><td>3</td><td>yes</td></tr><tr><td>post with 10 votes</td><td>46,710</td><td>6</td><td>235 ms</td><td>0 ms</td><td>267 ms</td><td>0 ms</td><td>1</td><td>yes</td></tr><tr><td>post 4</td><td>46,714</td><td>10</td><td>219 ms</td><td>0 ms</td><td>257 ms</td><td>0 ms</td><td>3</td><td>yes</td></tr><tr><td>post with no votes</td><td>46,708</td><td>4</td><td>266 ms</td><td>0 ms</td><td>269 ms</td><td>0 ms</td><td>0</td><td>empty</td></tr><tr><td>write: cast a vote (rolled back)</td><td>10</td><td>13</td><td>0 ms</td><td>0 ms</td><td>0 ms</td><td>0 ms</td><td>0</td><td>empty</td></tr></tbody></table></div>
+</div>
+
+<div class="fix">
+<h3>Fix 02. Stop the implicit conversion in the CRM lookup</h3>
+<p>The external contact id column is <code>varchar(20)</code>. The procedure takes <code>nvarchar(20)</code>, which is what .NET sends by default. So SQL Server converted every row of the index to nvarchar and scanned it, to find one row. The new version converts the parameter once and seeks. It then re-checks the found row with the original comparison, so no input can match a different row than before. The procedure signature does not change.</p>
+<div class="facts">
+<div>Result</div><div>974 reads &rarr; 9. 16 ms CPU &rarr; 0 ms. This is the most frequent read after page views.</div>
+<div>Proof</div><div class="ok">Same result: 6 of 6 calls identical, 5 rows compared with EXCEPT both ways, row order included. 1 call returns no rows on both sides; it shows cost only, not identity.</div>
+<div>Also tested</div><div>Old and new body side by side as test twins first: 6 of 6 identical, including lower case, a trailing space and a full-width digit.</div>
+<div>Files</div><div><code>fixes/02-implicit-conversion/</code></div>
+</div>
+<div class="table-wrap"><table class="nums"><thead><tr><th>Test call</th><th>Reads before</th><th>Reads after</th><th>CPU before</th><th>CPU after</th><th>Elapsed before</th><th>Elapsed after</th><th>Rows</th><th>Same</th></tr></thead><tbody><tr><td>known id</td><td>974</td><td>9</td><td>16 ms</td><td>0 ms</td><td>18 ms</td><td>0 ms</td><td>1</td><td>yes</td></tr><tr><td>first user</td><td>974</td><td>9</td><td>16 ms</td><td>0 ms</td><td>17 ms</td><td>0 ms</td><td>1</td><td>yes</td></tr><tr><td>lower case</td><td>974</td><td>9</td><td>16 ms</td><td>0 ms</td><td>17 ms</td><td>0 ms</td><td>1</td><td>yes</td></tr><tr><td>trailing space</td><td>974</td><td>9</td><td>16 ms</td><td>0 ms</td><td>18 ms</td><td>0 ms</td><td>1</td><td>yes</td></tr><tr><td>full-width last digit</td><td>974</td><td>9</td><td>16 ms</td><td>0 ms</td><td>16 ms</td><td>0 ms</td><td>1</td><td>yes</td></tr><tr><td>unknown id</td><td>968</td><td>3</td><td>16 ms</td><td>0 ms</td><td>16 ms</td><td>0 ms</td><td>0</td><td>empty</td></tr></tbody></table></div>
+</div>
+
+<div class="fix">
+<h3>Fix 03. Make the month report seek</h3>
+<p>The report filtered with <code>YEAR(CreationDate) = @Year AND MONTH(CreationDate) = @Month</code>. A function around a column hides it from the index, so SQL Server computed both functions for all 3.7 million posts. A range from the first day of the month to the first day of the next selects the same rows and seeks. An invalid month still returns no rows instead of an error.</p>
+<div class="facts">
+<div>Result</div><div>June 2010: 8,330 reads &rarr; 392. 219 ms CPU &rarr; 16 ms.</div>
+<div>Proof</div><div class="ok">Same result: 7 of 7 calls identical, 121 rows compared with EXCEPT both ways, row order included. 2 calls return no rows on both sides; they show cost only, not identity.</div>
+<div>Also tested</div><div>Test twins first: 7 of 7 identical.</div>
+<div>Files</div><div><code>fixes/03-daily-counts-sargable/</code></div>
+</div>
+<div class="table-wrap"><table class="nums"><thead><tr><th>Test call</th><th>Reads before</th><th>Reads after</th><th>CPU before</th><th>CPU after</th><th>Elapsed before</th><th>Elapsed after</th><th>Rows</th><th>Same</th></tr></thead><tbody><tr><td>2008-07 (data starts 31st)</td><td>8,330</td><td>4</td><td>172 ms</td><td>0 ms</td><td>172 ms</td><td>0 ms</td><td>1</td><td>yes</td></tr><tr><td>2008-08</td><td>8,330</td><td>47</td><td>171 ms</td><td>0 ms</td><td>164 ms</td><td>2 ms</td><td>31</td><td>yes</td></tr><tr><td>2009-02 (28 days)</td><td>8,330</td><td>175</td><td>187 ms</td><td>0 ms</td><td>186 ms</td><td>10 ms</td><td>28</td><td>yes</td></tr><tr><td>2010-06</td><td>8,330</td><td>392</td><td>219 ms</td><td>16 ms</td><td>229 ms</td><td>24 ms</td><td>30</td><td>yes</td></tr><tr><td>2010-12 (last month)</td><td>8,330</td><td>478</td><td>203 ms</td><td>16 ms</td><td>237 ms</td><td>28 ms</td><td>31</td><td>yes</td></tr><tr><td>2011-01 (no data)</td><td>8,330</td><td>4</td><td>140 ms</td><td>0 ms</td><td>159 ms</td><td>0 ms</td><td>0</td><td>empty</td></tr><tr><td>month 13 (invalid)</td><td>8,330</td><td>0</td><td>187 ms</td><td>0 ms</td><td>206 ms</td><td>0 ms</td><td>0</td><td>empty</td></tr></tbody></table></div>
+</div>
+
+<div class="fix">
+<h3>Fix 04. Give search and the tag page a narrow index</h3>
+<p>Both procedures filter with <code>LIKE '%term%'</code>. A leading wildcard can never seek, so both read every question, from the clustered index that also holds every post body. The fix keeps the queries as they are and gives them less to read: a new index on <code>Posts (PostTypeId, CreationDate)</code> with only the columns they use. Search can now stop after its first 50 hits, because the index is already in date order. The tag page also looked up every answer of every matching question; adding <code>Score</code> and <code>OwnerUserId</code> to the vendor's <code>IX_Posts_ParentId</code> removed those lookups.</p>
+<div class="facts">
+<div>Result</div><div>Search 'memory leak': 610,002 reads &rarr; 640. A search with no match: 61.9 s &rarr; 1.8 s. Tag 'c#': 6.2 s &rarr; 1.5 s.</div>
+<div>Cost</div><div>22 s to build both. The new index is 161 MB after fix 05. Votes now also update <code>IX_Posts_ParentId</code>, because it carries the score.</div>
+<div>Left over</div><div>The tag page still runs <code>LIKE</code> over every question's tags: 1.0 s to 1.3 s of CPU per call. Only a tag table or full-text search removes that. Both change results or code, so they are vendor work.</div>
+<div>Proof</div><div class="ok">Same result: 8 of 8 calls identical, 230 rows compared with EXCEPT both ways, row order included. 1 call returns no rows on both sides; it shows cost only, not identity.</div>
+<div>Files</div><div><code>fixes/04-search-tag-index/</code>, with the two steps in <code>iterations.md</code></div>
+</div>
+<div class="table-wrap"><table class="nums"><thead><tr><th>Test call</th><th>Reads before</th><th>Reads after</th><th>CPU before</th><th>CPU after</th><th>Elapsed before</th><th>Elapsed after</th><th>Rows</th><th>Same</th></tr></thead><tbody><tr><td>search &#39;linq&#39;</td><td>72,930</td><td>81</td><td>32 ms</td><td>15 ms</td><td>36 ms</td><td>10 ms</td><td>50</td><td>yes</td></tr><tr><td>search &#39;memory leak&#39;</td><td>610,002</td><td>640</td><td>265 ms</td><td>78 ms</td><td>293 ms</td><td>79 ms</td><td>50</td><td>yes</td></tr><tr><td>search &#39;unit test&#39;</td><td>257,627</td><td>273</td><td>110 ms</td><td>31 ms</td><td>121 ms</td><td>32 ms</td><td>50</td><td>yes</td></tr><tr><td>search, no match</td><td>22,244,119</td><td>14,186</td><td>13.0 s</td><td>1.7 s</td><td>61.9 s</td><td>1.8 s</td><td>0</td><td>empty</td></tr><tr><td>tag &#39;sql-server&#39;</td><td>1,199,440</td><td>87,087</td><td>2.3 s</td><td>1.0 s</td><td>5.4 s</td><td>1.2 s</td><td>20</td><td>yes</td></tr><tr><td>tag &#39;c#&#39;</td><td>2,692,264</td><td>426,337</td><td>3.0 s</td><td>1.3 s</td><td>6.2 s</td><td>1.5 s</td><td>20</td><td>yes</td></tr><tr><td>tag &#39;haskell&#39;</td><td>839,137</td><td>20,450</td><td>2.4 s</td><td>1.0 s</td><td>4.9 s</td><td>1.1 s</td><td>20</td><td>yes</td></tr><tr><td>tag &#39;delphi&#39;</td><td>935,131</td><td>36,814</td><td>2.2 s</td><td>1.0 s</td><td>5.1 s</td><td>1.1 s</td><td>20</td><td>yes</td></tr></tbody></table></div>
+</div>
+
+<div class="fix">
+<h3>Fix 05. Make the top answerers report cheap for every date range</h3>
+<p>SQL Server compiles a procedure's plan for the parameters of its first call and reuses it. For a one-day range it picks a seek plus one lookup per row. That is right for a day and very wrong for a year. Each test call below first clears the plan, then runs one call to choose the cached plan, then measures the call that has to live with it. Adding <code>OwnerUserId</code> to the index from fix 04 covers the report, so every range is one seek and one range read, whatever ran first. No <code>OPTION (RECOMPILE)</code> was needed.</p>
+<div class="facts">
+<div>Result</div><div>A year after a day plan: 8,791,501 reads and 24.1 s &rarr; 3,384 reads and 588 ms. One day: 12,671 &rarr; 82 reads.</div>
+<div>Cost</div><div>77 s to rebuild the index from fix 04 with one more column.</div>
+<div>Proof</div><div class="ok">Same result: 6 of 6 calls identical, 120 rows compared with EXCEPT both ways, row order included.</div>
+<div>Files</div><div><code>fixes/05-top-answerers-sniffing/</code></div>
+</div>
+<div class="table-wrap"><table class="nums"><thead><tr><th>Test call</th><th>Reads before</th><th>Reads after</th><th>CPU before</th><th>CPU after</th><th>Elapsed before</th><th>Elapsed after</th><th>Rows</th><th>Same</th></tr></thead><tbody><tr><td>year, after a day plan</td><td>8,791,501</td><td>3,384</td><td>4.5 s</td><td>454 ms</td><td>24.1 s</td><td>588 ms</td><td>20</td><td>yes</td></tr><tr><td>month, after a day plan</td><td>475,893</td><td>334</td><td>125 ms</td><td>47 ms</td><td>156 ms</td><td>45 ms</td><td>20</td><td>yes</td></tr><tr><td>day, after a year plan</td><td>6,501</td><td>84</td><td>547 ms</td><td>0 ms</td><td>564 ms</td><td>2 ms</td><td>20</td><td>yes</td></tr><tr><td>day, own plan</td><td>12,671</td><td>82</td><td>0 ms</td><td>0 ms</td><td>10 ms</td><td>4 ms</td><td>20</td><td>yes</td></tr><tr><td>week, own plan</td><td>6,531</td><td>119</td><td>329 ms</td><td>0 ms</td><td>368 ms</td><td>9 ms</td><td>20</td><td>yes</td></tr><tr><td>year, own plan</td><td>8,320</td><td>2,186</td><td>1.0 s</td><td>187 ms</td><td>1.1 s</td><td>193 ms</td><td>20</td><td>yes</td></tr></tbody></table></div>
+</div>
+
+<div class="fix">
+<h3>Fix 06. Drop the index nobody reads</h3>
+<p><code>IX_Posts_LastActivityDate</code> was never read during the workload. None of the plans in Query Store reads it. Three write plans maintain it, because it carries <code>ViewCount</code> and <code>Score</code>, which change on every page view and vote. Writes below run inside a transaction that rolls back, so the data stays the same.</p>
+<div class="facts">
+<div>Result</div><div>A page view: 7 &rarr; 4 reads. A vote: 19 &rarr; 16. 94 MB freed.</div>
+<div>Proof</div><div>Dropping an index cannot change a result. The proof here is that nothing uses it: 0 seeks, scans and lookups in the index counters, and 0 Query Store plans that read it (<code>evidence-before-drop.txt</code>). A rare monthly job could still need it, so the rollback script stays with the change.</div>
+<div>Files</div><div><code>fixes/06-drop-unused-index/</code></div>
+</div>
+<div class="table-wrap"><table class="nums"><thead><tr><th>Test call</th><th>Reads before</th><th>Reads after</th><th>CPU before</th><th>CPU after</th><th>Elapsed before</th><th>Elapsed after</th><th>Rows</th><th>Same</th></tr></thead><tbody><tr><td>write: record a page view</td><td>7</td><td>4</td><td>0 ms</td><td>0 ms</td><td>0 ms</td><td>0 ms</td><td>0</td><td>empty</td></tr><tr><td>write: cast an up-vote</td><td>19</td><td>16</td><td>0 ms</td><td>0 ms</td><td>0 ms</td><td>0 ms</td><td>0</td><td>empty</td></tr></tbody></table></div>
+</div>
+
+<div class="fix">
+<h3>Fix 00. Turn AUTO_CLOSE off</h3>
+<p>The first workload run lost its index counters the moment it ended. The error log showed why: the database started 11 times in 28 minutes with no server restart. Two of those starts were setup steps; the rest were AUTO_CLOSE. With <code>AUTO_CLOSE</code> on, every time the last connection leaves, SQL Server closes the database and throws away its cached pages and plans. Express creates databases this way by default. The baseline in this report was taken after this change.</p>
+<div class="facts"><div>Files</div><div><code>fixes/00-auto-close-off/</code></div></div>
+</div>
+
+<h2>3. The same workload, before and after</h2>
+<p>The workload ran twice for 20 minutes with 4 workers and the same weighted mix: once before the fixes, once after. The numbers below are Query Store averages per call for each run.</p>
+<div class="table-wrap"><table class="nums"><thead><tr><th>Procedure</th><th>Calls before</th><th>Calls after</th><th>Avg CPU before</th><th>Avg CPU after</th><th>Avg duration before</th><th>Avg duration after</th><th>Avg reads before</th><th>Avg reads after</th></tr></thead><tbody><tr><td>app.GetTopAnswersByTag</td><td>157</td><td>2,026</td><td>5.8 s</td><td>1.2 s</td><td>6.8 s</td><td>1.9 s</td><td>1,840,707</td><td>182,570</td></tr><tr><td>app.GetPostVoteCounts</td><td>3,307</td><td>41,000</td><td>264 ms</td><td>0 ms</td><td>353 ms</td><td>0 ms</td><td>46,709</td><td>9</td></tr><tr><td>app.SearchQuestions</td><td>335</td><td>4,133</td><td>112 ms</td><td>20 ms</td><td>482 ms</td><td>31 ms</td><td>191,676</td><td>171</td></tr><tr><td>app.GetUserByExternalId</td><td>2,448</td><td>30,929</td><td>18 ms</td><td>0 ms</td><td>24 ms</td><td>0 ms</td><td>974</td><td>9</td></tr><tr><td>app.GetDailyPostCounts</td><td>161</td><td>2,051</td><td>209 ms</td><td>19 ms</td><td>279 ms</td><td>28 ms</td><td>8,346</td><td>290</td></tr><tr><td>app.GetTopAnswerers</td><td>169</td><td>2,060</td><td>145 ms</td><td>8 ms</td><td>765 ms</td><td>13 ms</td><td>223,577</td><td>166</td></tr><tr><td>app.GetUserProfile</td><td>1,227</td><td>15,353</td><td>1 ms</td><td>1 ms</td><td>4 ms</td><td>3 ms</td><td>300</td><td>310</td></tr><tr><td>app.GetQuestionPage</td><td>3,307</td><td>41,000</td><td>0 ms</td><td>0 ms</td><td>5 ms</td><td>1 ms</td><td>27</td><td>27</td></tr><tr><td>app.RecordPostView</td><td>3,307</td><td>41,000</td><td>0 ms</td><td>0 ms</td><td>635 ms</td><td>0 ms</td><td>7</td><td>4</td></tr><tr><td>app.CastVote</td><td>428</td><td>5,110</td><td>0 ms</td><td>0 ms</td><td>115 ms</td><td>3 ms</td><td>8</td><td>18</td></tr><tr class="total"><td>All calls</td><td>14,846</td><td>184,662</td><td colspan="6"></td></tr></tbody></table></div>
+<p>The workers send the next call as soon as the last one returns. So when calls got faster, they sent more: 184,662 calls instead of 14,846. That is why the summary compares CPU and reads for the same calls: the after-run average per call, times the before-run number of calls, procedure by procedure.</p>
+<p>Even with 12 times the calls, the data file served 3.0 GB of reads instead of 967 GB. The disk was never slow: 0.82 ms per read on average. The volume was the problem.</p>
+<p>One call got more expensive. A vote reads 18 pages instead of 8, because two of the new indexes carry columns a vote changes. It still takes 3 ms, and votes are a small share of the traffic.</p>
+<p><strong>What is left.</strong> The tag page is now 94% of the CPU that remains, at 1.2 s per call. Its hash join also spills to tempdb: up to 43 MB per call, and 28 GB over the after run. The next step is the tag table or full-text search in section 5. That needs the vendor.</p>
+
+<h2>4. Server and database settings</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Setting</th><th>Now</th><th>What it means</th><th>Advice</th></tr></thead>
+<tbody>
+<tr><td>Max server memory</td><td>2,147,483,647 MB</td><td>No cap. Express limits the buffer pool to about 1.4 GB anyway: 1,410 MB in use against a 9,076 MB data file.</td><td>On a full edition, cap it and leave the OS a few GB. On Express, the fixes above matter more because memory cannot grow.</td></tr>
+<tr><td>MAXDOP</td><td>0</td><td>One query may use every core.</td><td>Set it to the cores per NUMA node, at most 8.</td></tr>
+<tr><td>Cost threshold for parallelism</td><td>5</td><td>The original default. Small queries go parallel.</td><td>Start at 50 and check Query Store after a week.</td></tr>
+<tr><td>Compatibility level</td><td>100</td><td>The optimizer behaves like SQL Server 2008. Newer features that soften parameter sniffing and memory grants are off.</td><td>Raise it only with the vendor and a test run. Query Store can force the old plans back if one regresses.</td></tr>
+<tr><td>Read committed snapshot</td><td>off</td><td>Readers and writers block each other. That is how the tag page held up page views.</td><td>Ask the vendor if the app supports it. It removes this whole class of waits.</td></tr>
+<tr><td>Query Store</td><td>on</td><td>The source of most numbers in this report.</td><td>Keep it on.</td></tr>
+<tr><td>Data file latency</td><td>0.82 ms per read</td><td>Fast storage.</td><td>No action.</td></tr>
+</tbody></table></div>
+
+<h2>5. What to clear with the app vendor</h2>
+<p>A database behind a vendor app is shared ground. These items touch objects the vendor ships, or need their answer:</p>
+<ul>
+<li><strong>New and changed indexes</strong> (fixes 01, 04, 05). Some vendors drop unknown indexes during upgrades, and some refuse support while they exist. Ask whether they accept them, or will ship them in their next release.</li>
+<li><strong>Dropping their index</strong> (fix 06). Ask if any report, job or upgrade script reads it. It was unused for this workload only.</li>
+<li><strong>Procedure edits</strong> (fixes 02 and 03). Their next upgrade will overwrite them. Send them the scripts so the fix lands in their code.</li>
+<li><strong>The CRM id column type.</strong> The cleaner fix for 02 is in the app: send the parameter as varchar, or make the column nvarchar.</li>
+<li><strong>Search and tags.</strong> Full-text search or a tag table would remove the remaining scan. Both change results slightly, so they are a product decision.</li>
+<li><strong>Read committed snapshot and the compatibility level.</strong> Both are database settings the vendor should confirm they support.</li>
+</ul>
+
+<h2>6. How this was done</h2>
+<ul>
+<li>Read-only access was enough for the audit: <code>VIEW SERVER STATE</code> and <code>VIEW DATABASE STATE</code>. Ten scripts collect settings, waits, file latency, Query Store top queries with their waits and tempdb use, index usage, missing-index hints, plan warnings and parameter sensitivity.</li>
+<li>The fixes were tested on a copy, never on the live server. A fix is done when every row matches, not when it "should" match.</li>
+<li>Fewer reads at a higher elapsed time counts as a regression, not a win.</li>
+<li>A rewrite that uses existing indexes comes before a new index. Every index here has its build time and write cost next to it.</li>
+<li>The database is the public StackOverflow2010 copy (Stack Exchange data dump, cc-by-sa 4.0) with a small app built on top of it to play a vendor system. Every number comes from a run in this repository, and the scripts reproduce it.</li>
+</ul>
+<p class="note">Lab: SQL Server 2025 (17.0.1000.7) Express Edition (64-bit), 8 cores, 64 GB RAM, NVMe SSD.</p>
+
+</main>
+</body>
+</html>

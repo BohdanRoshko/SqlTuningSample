@@ -1,0 +1,2 @@
+"score","table_name","equality_columns","inequality_columns","included_columns","times_wanted","est_impact_pct","avg_query_cost","last_user_seek","sample_query"
+"592","[StackOverflow2010].[dbo].[Users]","","[Reputation]","","1","15.3","38.73","10/30/2026 17:22:53","SELECT Id FROM dbo.Users WHERE Reputation > 50 AND Id % 37 = 0 UNION SELECT h.OwnerUserId FROM (     SELECT TOP (25) OwnerUserId FROM dbo.Posts WHERE OwnerUserId > 0     GROUP BY OwnerUserId ORDER BY "
