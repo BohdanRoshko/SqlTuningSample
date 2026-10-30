@@ -1,0 +1,12 @@
+
+(11 rows affected)
+database_starts first_start last_start
+--------------- ----------- ----------
+11 2026-10-30 16:02:48.850 2026-10-30 16:30:24.310
+
+(1 rows affected)
+name is_auto_close_on
+---- ----------------
+StackOverflow2010 1
+
+(1 rows affected)

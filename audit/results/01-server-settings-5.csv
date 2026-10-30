@@ -1,0 +1,2 @@
+"actual_state_desc","desired_state_desc","query_capture_mode_desc","current_storage_size_mb","max_storage_size_mb","interval_length_minutes","readonly_reason"
+"READ_WRITE","READ_WRITE","ALL","1","1000","15","0"

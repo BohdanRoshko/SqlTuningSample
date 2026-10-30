@@ -1,0 +1,2 @@
+"name","compatibility_level","recovery_model_desc","page_verify_option_desc","is_auto_create_stats_on","is_auto_update_stats_on","is_auto_update_stats_async_on","is_read_committed_snapshot_on","snapshot_isolation_state_desc","is_query_store_on","is_auto_shrink_on","is_auto_close_on"
+"StackOverflow2010","100","SIMPLE","CHECKSUM","True","True","False","False","OFF","True","False","False"

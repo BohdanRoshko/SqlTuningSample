@@ -2,10 +2,14 @@
     Source: https://downloads.brentozar.com/StackOverflow2010.7z (cc-by-sa 4.0, Stack Exchange data dump).
     Run with: sqlcmd -S .\SQLEXPRESS -E -C -i setup\01-attach.sql -v DataDir='"E:\SqlTuningSample\_data\db"'
 
-    The SQL Server service account needs full control on that folder.
-    With Windows authentication, SQL Server opens the files as the caller, and a non-elevated
-    caller gets "Access is denied". A short-lived SQL login makes SQL Server open the files
-    as its own service account instead. The login is dropped at the end.  */
+    File access. On a non-elevated session the attach failed with "Access is denied"
+    (OS error 5) until both files were opened up, even with the service SID on the folder:
+        icacls <DataDir>\StackOverflow2010.mdf     /grant "Everyone:F"
+        icacls <DataDir>\StackOverflow2010_log.ldf /grant "Everyone:F"
+    That is fine for a lab copy. Do not do it on a server.
+
+    A short-lived SQL login runs the attach, so SQL Server opens the files as its own
+    service account and not as the Windows caller. The login is dropped at the end.  */
 USE master;
 GO
 IF DB_ID(N'StackOverflow2010') IS NULL

@@ -1,0 +1,5 @@
+"database_name","file_name","type_desc","physical_name","num_of_reads","mb_read","avg_read_ms","num_of_writes","mb_written","avg_write_ms"
+"StackOverflow2010","StackOverflow2010","ROWS","E:\SqlTuningSample\_data\db\StackOverflow2010.mdf","12879022","989993.8","0.82","6643","52.1","0.22"
+"tempdb","tempdev","ROWS","C:\Program Files\Microsoft SQL Server\MSSQL17.SQLEXPRESS\MSSQL\DATA\tempdb.mdf","3916","220.3","0.35","73733","4596.0","0.35"
+"StackOverflow2010","StackOverflow2010_log","LOG","E:\SqlTuningSample\_data\db\StackOverflow2010_log.ldf","5","1.0","0.40","4620","18.3","0.13"
+"tempdb","templog","LOG","C:\Program Files\Microsoft SQL Server\MSSQL17.SQLEXPRESS\MSSQL\DATA\templog.ldf","7","1.0","0.14","1001","52.7","0.30"
