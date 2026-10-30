@@ -1,0 +1,785 @@
+{
+  "Fix": "02-implicit-conversion",
+  "Title": "Implicit conversion: _TestOld against _Test, side by side",
+  "MeasuredAt": "2026-10-30 16:52",
+  "Runs": 5,
+  "ApplySeconds": null,
+  "Method": "Median of warm runs, SET STATISTICS IO, TIME. Identity: EXCEPT both ways on every row, row order included.",
+  "AllIdentical": true,
+  "Calls": [
+    {
+      "Label": "known id",
+      "BeforeSql": "EXEC app.GetUserByExternalId_TestOld @ExternalContactId = N'CRM-00022656'",
+      "AfterSql": "EXEC app.GetUserByExternalId_Test @ExternalContactId = N'CRM-00022656'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 974.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 16.0,
+        "ElapsedMs": 16.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 17,
+            "ClientMs": 18,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 31,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 17,
+            "ClientMs": 18,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 9.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          }
+        ]
+      },
+      "ReadsCutPct": 99.1,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 100.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "known id",
+        "RowsBefore": 1,
+        "RowsAfter": 1,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -1858564656,
+        "ChecksumAfter": -1858564656,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "first user",
+      "BeforeSql": "EXEC app.GetUserByExternalId_TestOld @ExternalContactId = N'CRM-00000001'",
+      "AfterSql": "EXEC app.GetUserByExternalId_Test @ExternalContactId = N'CRM-00000001'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 974.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 16.0,
+        "ElapsedMs": 17.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 17,
+            "ClientMs": 18,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 18,
+            "ClientMs": 19,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 18,
+            "ClientMs": 19,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 9.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          }
+        ]
+      },
+      "ReadsCutPct": 99.1,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 100.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "first user",
+        "RowsBefore": 1,
+        "RowsAfter": 1,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -628052475,
+        "ChecksumAfter": -628052475,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "lower case",
+      "BeforeSql": "EXEC app.GetUserByExternalId_TestOld @ExternalContactId = N'crm-00022656'",
+      "AfterSql": "EXEC app.GetUserByExternalId_Test @ExternalContactId = N'crm-00022656'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 974.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 16.0,
+        "ElapsedMs": 17.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 32,
+            "ElapsedMs": 19,
+            "ClientMs": 20,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 17,
+            "ClientMs": 18,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 18,
+            "ClientMs": 19,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 15,
+            "ClientMs": 16,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 15,
+            "ClientMs": 16,
+            "Rows": 1
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 9.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          }
+        ]
+      },
+      "ReadsCutPct": 99.1,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 100.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "lower case",
+        "RowsBefore": 1,
+        "RowsAfter": 1,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -1858564656,
+        "ChecksumAfter": -1858564656,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "trailing space",
+      "BeforeSql": "EXEC app.GetUserByExternalId_TestOld @ExternalContactId = N'CRM-00022656 '",
+      "AfterSql": "EXEC app.GetUserByExternalId_Test @ExternalContactId = N'CRM-00022656 '",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 974.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 16.0,
+        "ElapsedMs": 16.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 16,
+            "ClientMs": 18,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 16,
+            "ClientMs": 20,
+            "Rows": 1
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 9.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          }
+        ]
+      },
+      "ReadsCutPct": 99.1,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 100.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "trailing space",
+        "RowsBefore": 1,
+        "RowsAfter": 1,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -1858564656,
+        "ChecksumAfter": -1858564656,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "full-width last digit",
+      "BeforeSql": "DECLARE @p nvarchar(20) = N'CRM-0002265' + NCHAR(65302); EXEC app.GetUserByExternalId_TestOld @ExternalContactId = @p",
+      "AfterSql": "DECLARE @p nvarchar(20) = N'CRM-0002265' + NCHAR(65302); EXEC app.GetUserByExternalId_Test @ExternalContactId = @p",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 974.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 16.0,
+        "ElapsedMs": 17.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 17,
+            "ClientMs": 18,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 17,
+            "ClientMs": 18,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 974,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 17,
+            "ClientMs": 18,
+            "Rows": 1
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 9.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 1,
+        "Detail": [
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          },
+          {
+            "LogicalReads": 9,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 1
+          }
+        ]
+      },
+      "ReadsCutPct": 99.1,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 100.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "full-width last digit",
+        "RowsBefore": 1,
+        "RowsAfter": 1,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -1858564656,
+        "ChecksumAfter": -1858564656,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "unknown id",
+      "BeforeSql": "EXEC app.GetUserByExternalId_TestOld @ExternalContactId = N'CRM-99999999'",
+      "AfterSql": "EXEC app.GetUserByExternalId_Test @ExternalContactId = N'CRM-99999999'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 968.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 15.0,
+        "ElapsedMs": 16.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 968,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 968,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 968,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 15,
+            "ClientMs": 16,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 968,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 968,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 16,
+            "ClientMs": 17,
+            "Rows": 0
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 3.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 3,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 3,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 3,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 3,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 3,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          }
+        ]
+      },
+      "ReadsCutPct": 99.7,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 100.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "unknown id",
+        "RowsBefore": 0,
+        "RowsAfter": 0,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": null,
+        "ChecksumAfter": null,
+        "Identical": true,
+        "EmptyBothSides": true
+      }
+    }
+  ]
+}
