@@ -1,0 +1,1043 @@
+{
+  "Fix": "04-search-tag-index",
+  "Title": "Search and tag pages: scan a narrow index, not the whole Posts table",
+  "MeasuredAt": "2026-10-30 17:16",
+  "Runs": 5,
+  "ApplySeconds": 22.2,
+  "Method": "Median of warm runs, SET STATISTICS IO, TIME. Identity: EXCEPT both ways on every row, row order included.",
+  "AllIdentical": true,
+  "Calls": [
+    {
+      "Label": "search 'linq'",
+      "BeforeSql": "EXEC app.SearchQuestions @Term = N'linq'",
+      "AfterSql": "EXEC app.SearchQuestions @Term = N'linq'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 72930.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 32.0,
+        "ElapsedMs": 36.0,
+        "Rows": 50,
+        "Detail": [
+          {
+            "LogicalReads": 72930,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 31,
+            "ElapsedMs": 39,
+            "ClientMs": 40,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 72931,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 47,
+            "ElapsedMs": 33,
+            "ClientMs": 35,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 72930,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 32,
+            "ElapsedMs": 36,
+            "ClientMs": 37,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 72930,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 46,
+            "ElapsedMs": 38,
+            "ClientMs": 39,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 72931,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 32,
+            "ElapsedMs": 35,
+            "ClientMs": 36,
+            "Rows": 50
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 81.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 15.0,
+        "ElapsedMs": 10.0,
+        "Rows": 50,
+        "Detail": [
+          {
+            "LogicalReads": 81,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 12,
+            "ClientMs": 13,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 81,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 9,
+            "ClientMs": 10,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 81,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 9,
+            "ClientMs": 10,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 81,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 81,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 11,
+            "ClientMs": 12,
+            "Rows": 50
+          }
+        ]
+      },
+      "ReadsCutPct": 99.9,
+      "CpuCutPct": 53.1,
+      "ElapsedCutPct": 72.2,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "search 'linq'",
+        "RowsBefore": 50,
+        "RowsAfter": 50,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": 277153605,
+        "ChecksumAfter": 277153605,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "search 'memory leak'",
+      "BeforeSql": "EXEC app.SearchQuestions @Term = N'memory leak'",
+      "AfterSql": "EXEC app.SearchQuestions @Term = N'memory leak'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 610002.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 265.0,
+        "ElapsedMs": 293.0,
+        "Rows": 50,
+        "Detail": [
+          {
+            "LogicalReads": 610002,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 250,
+            "ElapsedMs": 293,
+            "ClientMs": 294,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 610002,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 265,
+            "ElapsedMs": 341,
+            "ClientMs": 342,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 610003,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 282,
+            "ElapsedMs": 293,
+            "ClientMs": 294,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 610002,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 281,
+            "ElapsedMs": 294,
+            "ClientMs": 296,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 610003,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 265,
+            "ElapsedMs": 293,
+            "ClientMs": 294,
+            "Rows": 50
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 640.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 78.0,
+        "ElapsedMs": 79.0,
+        "Rows": 50,
+        "Detail": [
+          {
+            "LogicalReads": 640,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 47,
+            "ElapsedMs": 80,
+            "ClientMs": 81,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 640,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 78,
+            "ElapsedMs": 79,
+            "ClientMs": 80,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 640,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 78,
+            "ElapsedMs": 73,
+            "ClientMs": 74,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 640,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 78,
+            "ElapsedMs": 76,
+            "ClientMs": 77,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 640,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 78,
+            "ElapsedMs": 86,
+            "ClientMs": 87,
+            "Rows": 50
+          }
+        ]
+      },
+      "ReadsCutPct": 99.9,
+      "CpuCutPct": 70.6,
+      "ElapsedCutPct": 73.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "search 'memory leak'",
+        "RowsBefore": 50,
+        "RowsAfter": 50,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -34841343,
+        "ChecksumAfter": -34841343,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "search 'unit test'",
+      "BeforeSql": "EXEC app.SearchQuestions @Term = N'unit test'",
+      "AfterSql": "EXEC app.SearchQuestions @Term = N'unit test'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 257627.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 110.0,
+        "ElapsedMs": 121.0,
+        "Rows": 50,
+        "Detail": [
+          {
+            "LogicalReads": 257628,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 93,
+            "ElapsedMs": 121,
+            "ClientMs": 121,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 257627,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 125,
+            "ElapsedMs": 119,
+            "ClientMs": 120,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 257627,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 110,
+            "ElapsedMs": 121,
+            "ClientMs": 122,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 257627,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 109,
+            "ElapsedMs": 117,
+            "ClientMs": 118,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 257628,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 125,
+            "ElapsedMs": 121,
+            "ClientMs": 122,
+            "Rows": 50
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 273.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 31.0,
+        "ElapsedMs": 32.0,
+        "Rows": 50,
+        "Detail": [
+          {
+            "LogicalReads": 273,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 47,
+            "ElapsedMs": 34,
+            "ClientMs": 35,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 273,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 32,
+            "ClientMs": 33,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 273,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 32,
+            "ClientMs": 33,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 273,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 31,
+            "ElapsedMs": 32,
+            "ClientMs": 33,
+            "Rows": 50
+          },
+          {
+            "LogicalReads": 273,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 47,
+            "ElapsedMs": 37,
+            "ClientMs": 38,
+            "Rows": 50
+          }
+        ]
+      },
+      "ReadsCutPct": 99.9,
+      "CpuCutPct": 71.8,
+      "ElapsedCutPct": 73.6,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "search 'unit test'",
+        "RowsBefore": 50,
+        "RowsAfter": 50,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": 269115404,
+        "ChecksumAfter": 269115404,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "search, no match",
+      "BeforeSql": "EXEC app.SearchQuestions @Term = N'qqzzxx'",
+      "AfterSql": "EXEC app.SearchQuestions @Term = N'qqzzxx'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 22244119.0,
+        "PhysicalReads": 60.0,
+        "CpuMs": 12968.0,
+        "ElapsedMs": 61883.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 22244126,
+            "PhysicalReads": 60,
+            "ReadAheadReads": 793775,
+            "CpuMs": 12968,
+            "ElapsedMs": 61859,
+            "ClientMs": 61859,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 22242885,
+            "PhysicalReads": 60,
+            "ReadAheadReads": 793771,
+            "CpuMs": 12547,
+            "ElapsedMs": 61895,
+            "ClientMs": 61896,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 22243795,
+            "PhysicalReads": 60,
+            "ReadAheadReads": 793763,
+            "CpuMs": 13188,
+            "ElapsedMs": 61883,
+            "ClientMs": 61884,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 22244119,
+            "PhysicalReads": 60,
+            "ReadAheadReads": 793762,
+            "CpuMs": 12593,
+            "ElapsedMs": 61665,
+            "ClientMs": 61666,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 22247161,
+            "PhysicalReads": 60,
+            "ReadAheadReads": 793762,
+            "CpuMs": 15204,
+            "ElapsedMs": 62176,
+            "ClientMs": 62177,
+            "Rows": 0
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 14186.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 1656.0,
+        "ElapsedMs": 1765.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 14186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1672,
+            "ElapsedMs": 1826,
+            "ClientMs": 1827,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 14186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1719,
+            "ElapsedMs": 1765,
+            "ClientMs": 1766,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 14186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1437,
+            "ElapsedMs": 1753,
+            "ClientMs": 1754,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 14186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1610,
+            "ElapsedMs": 1771,
+            "ClientMs": 1771,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 14186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1656,
+            "ElapsedMs": 1749,
+            "ClientMs": 1750,
+            "Rows": 0
+          }
+        ]
+      },
+      "ReadsCutPct": 99.9,
+      "CpuCutPct": 87.2,
+      "ElapsedCutPct": 97.1,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "search, no match",
+        "RowsBefore": 0,
+        "RowsAfter": 0,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": null,
+        "ChecksumAfter": null,
+        "Identical": true,
+        "EmptyBothSides": true
+      }
+    },
+    {
+      "Label": "tag 'sql-server'",
+      "BeforeSql": "EXEC app.GetTopAnswersByTag @Tag = N'sql-server'",
+      "AfterSql": "EXEC app.GetTopAnswersByTag @Tag = N'sql-server'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 1199440.0,
+        "PhysicalReads": 39.0,
+        "CpuMs": 2312.0,
+        "ElapsedMs": 5406.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 1206581,
+            "PhysicalReads": 41,
+            "ReadAheadReads": 831654,
+            "CpuMs": 2312,
+            "ElapsedMs": 5457,
+            "ClientMs": 5458,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 1201638,
+            "PhysicalReads": 34,
+            "ReadAheadReads": 829090,
+            "CpuMs": 2406,
+            "ElapsedMs": 5406,
+            "ClientMs": 5407,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 1195879,
+            "PhysicalReads": 39,
+            "ReadAheadReads": 826962,
+            "CpuMs": 2375,
+            "ElapsedMs": 5247,
+            "ClientMs": 5248,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 1199440,
+            "PhysicalReads": 28,
+            "ReadAheadReads": 828786,
+            "CpuMs": 2016,
+            "ElapsedMs": 5465,
+            "ClientMs": 5466,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 1197259,
+            "PhysicalReads": 72,
+            "ReadAheadReads": 827612,
+            "CpuMs": 2188,
+            "ElapsedMs": 5401,
+            "ClientMs": 5402,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 87087.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 1000.0,
+        "ElapsedMs": 1220.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 87087,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 9,
+            "CpuMs": 1047,
+            "ElapsedMs": 1240,
+            "ClientMs": 1241,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 87087,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 9,
+            "CpuMs": 1000,
+            "ElapsedMs": 1182,
+            "ClientMs": 1183,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 87087,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 41,
+            "CpuMs": 969,
+            "ElapsedMs": 1247,
+            "ClientMs": 1248,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 87087,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 9,
+            "CpuMs": 1109,
+            "ElapsedMs": 1220,
+            "ClientMs": 1221,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 87087,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 9,
+            "CpuMs": 969,
+            "ElapsedMs": 1173,
+            "ClientMs": 1174,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 92.7,
+      "CpuCutPct": 56.7,
+      "ElapsedCutPct": 77.4,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "tag 'sql-server'",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -202273447,
+        "ChecksumAfter": -202273447,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "tag 'c#'",
+      "BeforeSql": "EXEC app.GetTopAnswersByTag @Tag = N'c#'",
+      "AfterSql": "EXEC app.GetTopAnswersByTag @Tag = N'c#'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 2692264.0,
+        "PhysicalReads": 330.0,
+        "CpuMs": 3015.0,
+        "ElapsedMs": 6221.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 2672776,
+            "PhysicalReads": 363,
+            "ReadAheadReads": 820738,
+            "CpuMs": 2843,
+            "ElapsedMs": 6154,
+            "ClientMs": 6155,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 2692264,
+            "PhysicalReads": 163,
+            "ReadAheadReads": 829330,
+            "CpuMs": 3094,
+            "ElapsedMs": 6280,
+            "ClientMs": 6281,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 2692888,
+            "PhysicalReads": 519,
+            "ReadAheadReads": 828321,
+            "CpuMs": 3109,
+            "ElapsedMs": 6206,
+            "ClientMs": 6207,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 2710632,
+            "PhysicalReads": 330,
+            "ReadAheadReads": 834435,
+            "CpuMs": 2954,
+            "ElapsedMs": 6268,
+            "ClientMs": 6269,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 2682220,
+            "PhysicalReads": 115,
+            "ReadAheadReads": 824370,
+            "CpuMs": 3015,
+            "ElapsedMs": 6221,
+            "ClientMs": 6222,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 426337.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 1328.0,
+        "ElapsedMs": 1488.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 426337,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 217,
+            "CpuMs": 1391,
+            "ElapsedMs": 1500,
+            "ClientMs": 1501,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 426337,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 193,
+            "CpuMs": 1328,
+            "ElapsedMs": 1488,
+            "ClientMs": 1489,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 426337,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 217,
+            "CpuMs": 1328,
+            "ElapsedMs": 1471,
+            "ClientMs": 1472,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 426337,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 233,
+            "CpuMs": 1281,
+            "ElapsedMs": 1499,
+            "ClientMs": 1500,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 426337,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 241,
+            "CpuMs": 1344,
+            "ElapsedMs": 1444,
+            "ClientMs": 1445,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 84.2,
+      "CpuCutPct": 56.0,
+      "ElapsedCutPct": 76.1,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "tag 'c#'",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": 453512211,
+        "ChecksumAfter": 453512211,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "tag 'haskell'",
+      "BeforeSql": "EXEC app.GetTopAnswersByTag @Tag = N'haskell'",
+      "AfterSql": "EXEC app.GetTopAnswersByTag @Tag = N'haskell'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 839137.0,
+        "PhysicalReads": 7.0,
+        "CpuMs": 2391.0,
+        "ElapsedMs": 4855.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 839137,
+            "PhysicalReads": 10,
+            "ReadAheadReads": 802048,
+            "CpuMs": 2391,
+            "ElapsedMs": 4926,
+            "ClientMs": 4927,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 839498,
+            "PhysicalReads": 11,
+            "ReadAheadReads": 802240,
+            "CpuMs": 2531,
+            "ElapsedMs": 4883,
+            "ClientMs": 4884,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 840065,
+            "PhysicalReads": 4,
+            "ReadAheadReads": 802537,
+            "CpuMs": 2110,
+            "ElapsedMs": 4795,
+            "ClientMs": 4795,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 836781,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 800886,
+            "CpuMs": 2453,
+            "ElapsedMs": 4700,
+            "ClientMs": 4701,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 837695,
+            "PhysicalReads": 7,
+            "ReadAheadReads": 801419,
+            "CpuMs": 2375,
+            "ElapsedMs": 4855,
+            "ClientMs": 4856,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 20450.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 1047.0,
+        "ElapsedMs": 1131.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 20450,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1047,
+            "ElapsedMs": 1145,
+            "ClientMs": 1146,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 20450,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1031,
+            "ElapsedMs": 1131,
+            "ClientMs": 1132,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 20450,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1047,
+            "ElapsedMs": 1105,
+            "ClientMs": 1106,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 20450,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1047,
+            "ElapsedMs": 1140,
+            "ClientMs": 1141,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 20450,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1016,
+            "ElapsedMs": 1119,
+            "ClientMs": 1120,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 97.6,
+      "CpuCutPct": 56.2,
+      "ElapsedCutPct": 76.7,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "tag 'haskell'",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -437452275,
+        "ChecksumAfter": -437452275,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "tag 'delphi'",
+      "BeforeSql": "EXEC app.GetTopAnswersByTag @Tag = N'delphi'",
+      "AfterSql": "EXEC app.GetTopAnswersByTag @Tag = N'delphi'",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 935131.0,
+        "PhysicalReads": 11.0,
+        "CpuMs": 2156.0,
+        "ElapsedMs": 5055.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 935131,
+            "PhysicalReads": 14,
+            "ReadAheadReads": 812899,
+            "CpuMs": 2344,
+            "ElapsedMs": 5056,
+            "ClientMs": 5057,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 934152,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 812381,
+            "CpuMs": 2109,
+            "ElapsedMs": 5228,
+            "ClientMs": 5229,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 934639,
+            "PhysicalReads": 29,
+            "ReadAheadReads": 812522,
+            "CpuMs": 2391,
+            "ElapsedMs": 4932,
+            "ClientMs": 4933,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 935588,
+            "PhysicalReads": 7,
+            "ReadAheadReads": 812996,
+            "CpuMs": 2156,
+            "ElapsedMs": 4862,
+            "ClientMs": 4863,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 935614,
+            "PhysicalReads": 11,
+            "ReadAheadReads": 813185,
+            "CpuMs": 2125,
+            "ElapsedMs": 5055,
+            "ClientMs": 5056,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 36814.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 1000.0,
+        "ElapsedMs": 1105.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 36814,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1000,
+            "ElapsedMs": 1105,
+            "ClientMs": 1106,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 36814,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1047,
+            "ElapsedMs": 1114,
+            "ClientMs": 1115,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 36814,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1000,
+            "ElapsedMs": 1112,
+            "ClientMs": 1113,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 36814,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1000,
+            "ElapsedMs": 1086,
+            "ClientMs": 1087,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 36814,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1047,
+            "ElapsedMs": 1099,
+            "ClientMs": 1100,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 96.1,
+      "CpuCutPct": 53.6,
+      "ElapsedCutPct": 78.1,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "tag 'delphi'",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": 523741163,
+        "ChecksumAfter": 523741163,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    }
+  ]
+}
