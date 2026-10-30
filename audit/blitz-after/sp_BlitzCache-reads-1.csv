@@ -1,0 +1,83 @@
+"Database","Cost","Query Text","Query Type","Warnings","Missing Indexes","Implicit Conversion Info","Cached Execution Parameters","# Executions","Executions / Minute","Execution Weight","Total CPU (ms)","Avg CPU (ms)","CPU Weight","Total Duration (ms)","Avg Duration (ms)","Duration Weight","Total Reads","Avg Reads","Read Weight","Total Writes","Avg Writes","Write Weight","Average Rows","Minimum Memory Grant KB","Maximum Memory Grant KB","Minimum Used Grant KB","Maximum Used Grant KB","Average Max Memory Grant","Min Spills","Max Spills","Total Spills","Avg Spills","Created At","Last Execution","Last Completion","SQL Handle","SET Options","Query Hash"
+"StackOverflow2010","25.2975"," /* ---------- Tag page: best answers to questions with a tag ---------- */ CREATE   PROCEDURE app.GetTopAnswersByTag @Tag nvarchar(50) AS SET NOCOUNT ON; SELECT TOP (20) a.Id AS AnswerId, q.Id AS QuestionId, q.Title, a.Score, u.DisplayName FROM dbo.Posts q JOIN dbo.Posts a ON a.ParentId = q.Id LEFT JOIN dbo.Users u ON u.Id = a.OwnerUserId WHERE q.PostTypeId = 1   AND q.Tags LIKE N'%<' + @Tag + N'>%' ORDER BY a.Score DESC, a.Id DESC; ","Procedure or Function: [app].[GetTopAnswersByTag]","Forced Serialization, Plan created last 4hrs, non-SARGables","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetTopAnswersByTag]  @Tag = N'iphone'?>","2625","131","1","3267676","1244","94","4122476","1570","92","476333525","181460","98","4","0","0","20","21576","21576","1200","20992","","0","5491","4683938","1,784.36","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:03","3 0 7 0 13 208 124 79 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""
+"StackOverflow2010","25.2975","SELECT TOP (20) a.Id AS AnswerId, q.Id AS QuestionId, q.Title, a.Score, u.DisplayName FROM dbo.Posts q JOIN dbo.Posts a ON a.ParentId = q.Id LEFT JOIN dbo.Users u ON u.Id = a.OwnerUserId WHERE q.PostTypeId = 1   AND q.Tags LIKE N'%<' + @Tag + N'>%' ORDER BY a.Score DESC, a.Id DESC","Statement (parent [app].[GetTopAnswersByTag])","Forced Serialization, Plan created last 4hrs, non-SARGables","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetTopAnswersByTag]  @Tag = N'iphone'?>","2625","131","1","3267608","1244","94","4122393","1570","92","476333521","181460","98","2","0","0","20","21576","21576","1200","20992","21576","0","5491","4683938","1,784.36","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:03","3 0 7 0 13 208 124 79 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","12 44 64 249 248 170 67 119"
+"StackOverflow2010","0.1284991"," /* ---------- User profile page: the user and their top questions ---------- */ CREATE   PROCEDURE app.GetUserProfile @UserId int AS SET NOCOUNT ON; SELECT u.Id, u.DisplayName, u.Reputation, u.CreationDate, u.Location, u.Views, u.UpVotes, u.DownVotes FROM dbo.Users u WHERE u.Id = @UserId;  SELECT TOP (10) p.Id, p.Title, p.Score, p.CreationDate FROM dbo.Posts p WHERE p.OwnerUserId = @UserId   AND p.PostTypeId = 1 ORDER BY p.Score DESC, p.Id DESC; ","Procedure or Function: [app].[GetUserProfile]","Forced Serialization, Plan created last 4hrs","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetUserProfile]  @UserId = 52355?>","19729","986","8","11142","0","0","40377","2","1","6130997","310","1","0","0","0","3","1024","1024","0","16","","0","0","0","0.00","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:02","3 0 7 0 98 99 160 76 169 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""
+"StackOverflow2010","0.125216","SELECT TOP (10) p.Id, p.Title, p.Score, p.CreationDate FROM dbo.Posts p WHERE p.OwnerUserId = @UserId   AND p.PostTypeId = 1 ORDER BY p.Score DESC, p.Id DESC","Statement (parent [app].[GetUserProfile])","Forced Serialization, Plan created last 4hrs","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetUserProfile]  @UserId = 52355?>","19729","986","8","10662","0","0","39700","2","1","6071810","307","1","0","0","0","3","1024","1024","0","16","1024","0","0","0","0.00","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:02","3 0 7 0 98 99 160 76 169 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","108 249 64 119 173 3 154 202"
+"StackOverflow2010","0.03146698"," /* ---------- Question page ---------- */ CREATE   PROCEDURE app.GetQuestionPage @PostId int AS SET NOCOUNT ON; SELECT q.Id, q.Title, q.Body, q.Score, q.ViewCount, q.AnswerCount, q.Tags, q.CreationDate, u.DisplayName FROM dbo.Posts q LEFT JOIN dbo.Users u ON u.Id = q.OwnerUserId WHERE q.Id = @PostId;  SELECT a.Id, a.Body, a.Score, a.CreationDate, u.DisplayName FROM dbo.Posts a LEFT JOIN dbo.Users u ON u.Id = a.OwnerUserId WHERE a.ParentId = @PostId ORDER BY a.Score DESC, a.Id; ","Procedure or Function: [app].[GetQuestionPage]","Frequent Execution, Forced Serialization, Plan created last 4hrs, Long Running With Low CPU","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetQuestionPage]  @PostId = 3863199?>","52646","2632","22","6322","0","0","43892","0","0","1424265","27","0","0","0","0","3","1024","1024","0","120","","0","0","0","0.00","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:02","3 0 7 0 240 26 184 74 168 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""
+"StackOverflow2010","0.0248966","SELECT a.Id, a.Body, a.Score, a.CreationDate, u.DisplayName FROM dbo.Posts a LEFT JOIN dbo.Users u ON u.Id = a.OwnerUserId WHERE a.ParentId = @PostId ORDER BY a.Score DESC, a.Id","Statement (parent [app].[GetQuestionPage])","Frequent Execution, Forced Serialization, Plan created last 4hrs, Long Running With Low CPU","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetQuestionPage]  @PostId = 3863199?>","52646","2632","22","4317","0","0","30849","0","0","1052133","19","0","0","0","0","2","1024","1024","0","120","1024","0","0","0","0.00","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:02","3 0 7 0 240 26 184 74 168 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","80 181 159 204 78 142 178 44"
+"StackOverflow2010","0.219158","SELECT TOP (50) p.Id, p.Title, p.Score, p.AnswerCount, p.CreationDate FROM dbo.Posts p WHERE p.PostTypeId = 1   AND p.Title LIKE N'%' + @Term + N'%' ORDER BY p.CreationDate DESC, p.Id DESC","Statement (parent [app].[SearchQuestions])","Forced Serialization, Plan created last 4hrs, non-SARGables","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[SearchQuestions]  @Term = N'unit test'?>","5303","265","2","108499","20","3","133504","25","3","908124","171","0","0","0","0","50","0","0","0","0","0","0","0","0","0.00","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:02","3 0 7 0 212 171 136 78 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","202 187 240 169 62 39 74 25"
+"StackOverflow2010","0.219158"," /* ---------- Search box: questions whose title contains a term ---------- */ CREATE   PROCEDURE app.SearchQuestions @Term nvarchar(100) AS SET NOCOUNT ON; SELECT TOP (50) p.Id, p.Title, p.Score, p.AnswerCount, p.CreationDate FROM dbo.Posts p WHERE p.PostTypeId = 1   AND p.Title LIKE N'%' + @Term + N'%' ORDER BY p.CreationDate DESC, p.Id DESC; ","Procedure or Function: [app].[SearchQuestions]","Forced Serialization, Plan created last 4hrs, non-SARGables","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[SearchQuestions]  @Term = N'unit test'?>","5303","265","2","108579","20","3","133606","25","3","908124","171","0","0","0","0","50","0","0","0","0","","0","0","0","0.00","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:02","3 0 7 0 212 171 136 78 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""
+"StackOverflow2010","29.6186","SELECT CAST(p.CreationDate AS date) AS PostDate, COUNT(*) AS Posts FROM dbo.Posts p WHERE p.CreationDate >= @From   AND p.CreationDate <  DATEADD(MONTH, 1, @From) GROUP BY CAST(p.CreationDate AS date) ORDER BY PostDate","Statement (parent [app].[GetDailyPostCounts])","Forced Serialization, Plan created last 4hrs, Expensive Sort","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","2656","133","1","50104","18","1","61848","23","1","770331","290","0","0","0","0","30","21072","21072","944","10336","21072","0","0","0","0.00","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:02","3 0 7 0 70 244 112 80 136 126 49 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","93 246 101 230 11 239 90 62"
+"StackOverflow2010","29.6186","CREATE   PROCEDURE app.GetDailyPostCounts @Year int, @Month int AS SET NOCOUNT ON; -- An invalid year or month leaves @From NULL, so the query returns no rows, as before, instead of an error. DECLARE @From datetime = CASE WHEN @Month BETWEEN 1 AND 12 AND @Year BETWEEN 1753 AND 9998                               THEN DATEFROMPARTS(@Year, @Month, 1) END; SELECT CAST(p.CreationDate AS date) AS PostDate, COUNT(*) AS Posts FROM dbo.Posts p WHERE p.CreationDate >= @From   AND p.CreationDate <  DATEADD(MONTH, 1, @From) GROUP BY CAST(p.CreationDate AS date) ORDER BY PostDate; ","Procedure or Function: [app].[GetDailyPostCounts]","Forced Serialization, Plan created last 4hrs, Expensive Sort","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","<?NoNeedToClickMe -- N/A --?>","2656","133","1","50160","18","1","61921","23","1","770331","290","0","0","0","0","30","21072","21072","944","10336","","0","0","0","0.00","10/30/2026 18:34:02","10/30/2026 18:54:02","10/30/2026 18:54:02","3 0 7 0 70 244 112 80 136 126 49 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""

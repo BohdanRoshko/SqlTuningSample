@@ -1,0 +1,241 @@
+"Database","Cost","Query Text","Query Type","Warnings","Missing Indexes","Implicit Conversion Info","Cached Execution Parameters","# Executions","Executions / Minute","Execution Weight","Total CPU (ms)","Avg CPU (ms)","CPU Weight","Total Duration (ms)","Avg Duration (ms)","Duration Weight","Total Reads","Avg Reads","Read Weight","Total Writes","Avg Writes","Write Weight","Average Rows","Minimum Memory Grant KB","Maximum Memory Grant KB","Minimum Used Grant KB","Maximum Used Grant KB","Average Max Memory Grant","Min Spills","Max Spills","Total Spills","Avg Spills","Created At","Last Execution","Last Completion","SQL Handle","SET Options","Query Hash"
+"StackOverflow2010","620.635"," /* ---------- Tag page: best answers to questions with a tag ---------- */ CREATE   PROCEDURE app.GetTopAnswersByTag @Tag nvarchar(50) AS SET NOCOUNT ON; SELECT TOP (20) a.Id AS AnswerId, q.Id AS QuestionId, q.Title, a.Score, u.DisplayName FROM dbo.Posts q JOIN dbo.Posts a ON a.ParentId = q.Id LEFT JOIN dbo.Users u ON u.Id = a.OwnerUserId WHERE q.PostTypeId = 1   AND q.Tags LIKE N'%<' + @Tag + N'>%' ORDER BY a.Score DESC, a.Id DESC; ","Procedure or Function: [app].[GetTopAnswersByTag]","Missing Indexes (1), Parameter Sniffing, Forced Serialization, Plan created last 4hrs, non-SARGables","<MissingIndexes>
+
+/* 
+The Query Processor estimates that implementing the following index could improve query cost (620.635)
+by 91.9816% for 146 executions of the query over the last 0 hours.
+*/
+
+/* 
+USE [StackOverflow2010]
+GO
+
+CREATE NONCLUSTERED INDEX ix_PostTypeIdTags_Includes
+ ON [dbo].[Posts] ([PostTypeId], [Tags])
+INCLUDE ([Title]) WITH (FILLFACTOR=100, ONLINE=?, SORT_IN_TEMPDB=?, DATA_COMPRESSION=?);
+GO
+*/
+
+</MissingIndexes>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetTopAnswersByTag]  @Tag = N'iphone'?>","146","7","1","855565","5860","46","1009030","6911","21","278747562","1909229","53","7","0","0","20","29176","29176","1776","25328","","0","5492","275206","1,884.97","10/30/2026 18:11:27","10/30/2026 18:31:21","10/30/2026 18:31:28","3 0 7 0 13 208 124 79 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""
+"StackOverflow2010","620.635","SELECT TOP (20) a.Id AS AnswerId, q.Id AS QuestionId, q.Title, a.Score, u.DisplayName FROM dbo.Posts q JOIN dbo.Posts a ON a.ParentId = q.Id LEFT JOIN dbo.Users u ON u.Id = a.OwnerUserId WHERE q.PostTypeId = 1   AND q.Tags LIKE N'%<' + @Tag + N'>%' ORDER BY a.Score DESC, a.Id DESC","Statement (parent [app].[GetTopAnswersByTag])","Missing Indexes (1), Parameter Sniffing, Forced Serialization, Plan created last 4hrs, non-SARGables","<MissingIndexes>
+
+/* 
+The Query Processor estimates that implementing the following index could improve query cost (620.635)
+by 91.9816% for 146 executions of the query over the last 0 hours.
+*/
+
+/* 
+USE [StackOverflow2010]
+GO
+
+CREATE NONCLUSTERED INDEX ix_PostTypeIdTags_Includes
+ ON [dbo].[Posts] ([PostTypeId], [Tags])
+INCLUDE ([Title]) WITH (FILLFACTOR=100, ONLINE=?, SORT_IN_TEMPDB=?, DATA_COMPRESSION=?);
+GO
+*/
+
+</MissingIndexes>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetTopAnswersByTag]  @Tag = N'iphone'?>","146","7","1","855557","5859","46","1009021","6911","21","278747554","1909229","53","3","0","0","20","29176","29176","1776","25328","29176","0","5492","275206","1,884.97","10/30/2026 18:11:27","10/30/2026 18:31:21","10/30/2026 18:31:28","3 0 7 0 13 208 124 79 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","12 44 64 249 248 170 67 119"
+"StackOverflow2010","50.5406","SELECT v.VoteTypeId, vt.Name AS VoteType, COUNT(*) AS Votes FROM dbo.Votes v JOIN dbo.VoteTypes vt ON vt.Id = v.VoteTypeId WHERE v.PostId = @PostId GROUP BY v.VoteTypeId, vt.Name ORDER BY v.VoteTypeId","Statement (parent [app].[GetPostVoteCounts])","Missing Indexes (1), Forced Serialization, Plan created last 4hrs, non-SARGables","<MissingIndexes>
+
+/* 
+The Query Processor estimates that implementing the following index could improve query cost (50.5406)
+by 99.9619% for 3206 executions of the query over the last 0 hours.
+*/
+
+/* 
+USE [StackOverflow2010]
+GO
+
+CREATE NONCLUSTERED INDEX ix_PostId
+ ON [dbo].[Votes] ([PostId])
+ WITH (FILLFACTOR=100, ONLINE=?, SORT_IN_TEMPDB=?, DATA_COMPRESSION=?);
+GO
+*/
+
+</MissingIndexes>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetPostVoteCounts]  @PostId = 2195455?>","3206","160","22","870352","271","47","1199208","374","25","149832864","46735","28","0","0","0","1","1024","1024","0","16","1024","0","0","0","0.00","10/30/2026 18:11:23","10/30/2026 18:31:21","10/30/2026 18:31:21","3 0 7 0 41 63 172 75 169 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","218 24 227 105 13 144 93 74"
+"StackOverflow2010","50.5406"," /* ---------- Vote breakdown shown on every question page ---------- */ CREATE   PROCEDURE app.GetPostVoteCounts @PostId int AS SET NOCOUNT ON; SELECT v.VoteTypeId, vt.Name AS VoteType, COUNT(*) AS Votes FROM dbo.Votes v JOIN dbo.VoteTypes vt ON vt.Id = v.VoteTypeId WHERE v.PostId = @PostId GROUP BY v.VoteTypeId, vt.Name ORDER BY v.VoteTypeId; ","Procedure or Function: [app].[GetPostVoteCounts]","Missing Indexes (1), Forced Serialization, Plan created last 4hrs, non-SARGables","<MissingIndexes>
+
+/* 
+The Query Processor estimates that implementing the following index could improve query cost (50.5406)
+by 99.9619% for 3206 executions of the query over the last 0 hours.
+*/
+
+/* 
+USE [StackOverflow2010]
+GO
+
+CREATE NONCLUSTERED INDEX ix_PostId
+ ON [dbo].[Votes] ([PostId])
+ WITH (FILLFACTOR=100, ONLINE=?, SORT_IN_TEMPDB=?, DATA_COMPRESSION=?);
+GO
+*/
+
+</MissingIndexes>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetPostVoteCounts]  @PostId = 2195455?>","3206","160","22","870432","271","47","1199346","374","25","149832864","46735","28","0","0","0","1","1024","1024","0","16","","0","0","0","0.00","10/30/2026 18:11:23","10/30/2026 18:31:21","10/30/2026 18:31:21","3 0 7 0 41 63 172 75 169 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""
+"StackOverflow2010","121.579","SELECT TOP (50) p.Id, p.Title, p.Score, p.AnswerCount, p.CreationDate FROM dbo.Posts p WHERE p.PostTypeId = 1   AND p.Title LIKE N'%' + @Term + N'%' ORDER BY p.CreationDate DESC, p.Id DESC","Statement (parent [app].[SearchQuestions])","Missing Indexes (1), Parameter Sniffing, Forced Serialization, Expensive Key Lookup, Plan created last 4hrs, Long Running With Low CPU, non-SARGables","<MissingIndexes>
+
+/* 
+The Query Processor estimates that implementing the following index could improve query cost (121.579)
+by 94.6718% for 329 executions of the query over the last 0 hours.
+*/
+
+/* 
+USE [StackOverflow2010]
+GO
+
+CREATE NONCLUSTERED INDEX ix_PostTypeIdTitle_Includes
+ ON [dbo].[Posts] ([PostTypeId], [Title])
+INCLUDE ([AnswerCount], [CreationDate], [Score]) WITH (FILLFACTOR=100, ONLINE=?, SORT_IN_TEMPDB=?, DATA_COMPRESSION=?);
+GO
+*/
+
+</MissingIndexes>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[SearchQuestions]  @Term = N'mysql'?>","329","16","2","36764","111","2","180087","547","4","62675350","190502","12","0","0","0","50","0","0","0","0","0","0","0","0","0.00","10/30/2026 18:11:26","10/30/2026 18:31:20","10/30/2026 18:31:20","3 0 7 0 212 171 136 78 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","202 187 240 169 62 39 74 25"
+"StackOverflow2010","121.579"," /* ---------- Search box: questions whose title contains a term ---------- */ CREATE   PROCEDURE app.SearchQuestions @Term nvarchar(100) AS SET NOCOUNT ON; SELECT TOP (50) p.Id, p.Title, p.Score, p.AnswerCount, p.CreationDate FROM dbo.Posts p WHERE p.PostTypeId = 1   AND p.Title LIKE N'%' + @Term + N'%' ORDER BY p.CreationDate DESC, p.Id DESC; ","Procedure or Function: [app].[SearchQuestions]","Missing Indexes (1), Parameter Sniffing, Forced Serialization, Expensive Key Lookup, Plan created last 4hrs, Long Running With Low CPU, non-SARGables","<MissingIndexes>
+
+/* 
+The Query Processor estimates that implementing the following index could improve query cost (121.579)
+by 94.6718% for 329 executions of the query over the last 0 hours.
+*/
+
+/* 
+USE [StackOverflow2010]
+GO
+
+CREATE NONCLUSTERED INDEX ix_PostTypeIdTitle_Includes
+ ON [dbo].[Posts] ([PostTypeId], [Title])
+INCLUDE ([AnswerCount], [CreationDate], [Score]) WITH (FILLFACTOR=100, ONLINE=?, SORT_IN_TEMPDB=?, DATA_COMPRESSION=?);
+GO
+*/
+
+</MissingIndexes>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[SearchQuestions]  @Term = N'mysql'?>","329","16","2","36775","111","2","180106","547","4","62675350","190502","12","0","0","0","50","0","0","0","0","","0","0","0","0.00","10/30/2026 18:11:26","10/30/2026 18:31:20","10/30/2026 18:31:20","3 0 7 0 212 171 136 78 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""
+"StackOverflow2010","146.722","SELECT TOP (20) p.OwnerUserId, u.DisplayName, COUNT(*) AS Answers, SUM(p.Score) AS TotalScore FROM dbo.Posts p JOIN dbo.Users u ON u.Id = p.OwnerUserId WHERE p.PostTypeId = 2   AND p.CreationDate >= @From   AND p.CreationDate <  @To GROUP BY p.OwnerUserId, u.DisplayName ORDER BY TotalScore DESC, p.OwnerUserId","Statement (parent [app].[GetTopAnswerers])","Missing Indexes (1), Parameter Sniffing, Forced Serialization, Expensive Key Lookup, Plan created last 4hrs, Long Running With Low CPU, non-SARGables","<MissingIndexes>
+
+/* 
+The Query Processor estimates that implementing the following index could improve query cost (146.722)
+by 96.3845% for 162 executions of the query over the last 0 hours.
+*/
+
+/* 
+USE [StackOverflow2010]
+GO
+
+CREATE NONCLUSTERED INDEX ix_PostTypeIdCreationDate_Includes
+ ON [dbo].[Posts] ([PostTypeId], [CreationDate])
+INCLUDE ([OwnerUserId], [Score]) WITH (FILLFACTOR=100, ONLINE=?, SORT_IN_TEMPDB=?, DATA_COMPRESSION=?);
+GO
+*/
+
+</MissingIndexes>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetTopAnswerers]  @From = '2010-07-27 00:00:00.000', @To = '2010-08-03 00:00:00.000'?>","162","8","1","21239","131","1","135660","837","3","34181783","210998","6","0","0","0","20","9328","9328","1160","8744","9328","0","1038","1038","6.41","10/30/2026 18:11:24","10/30/2026 18:31:19","10/30/2026 18:31:19","3 0 7 0 127 24 101 81 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","114 175 214 68 33 41 66 183"
+"StackOverflow2010","146.722"," /* ---------- Report: top answerers in a date range (a day, a week, or a whole year) ---------- */ CREATE   PROCEDURE app.GetTopAnswerers @From datetime, @To datetime AS SET NOCOUNT ON; SELECT TOP (20) p.OwnerUserId, u.DisplayName, COUNT(*) AS Answers, SUM(p.Score) AS TotalScore FROM dbo.Posts p JOIN dbo.Users u ON u.Id = p.OwnerUserId WHERE p.PostTypeId = 2   AND p.CreationDate >= @From   AND p.CreationDate <  @To GROUP BY p.OwnerUserId, u.DisplayName ORDER BY TotalScore DESC, p.OwnerUserId; ","Procedure or Function: [app].[GetTopAnswerers]","Missing Indexes (1), Parameter Sniffing, Forced Serialization, Expensive Key Lookup, Plan created last 4hrs, Long Running With Low CPU, non-SARGables","<MissingIndexes>
+
+/* 
+The Query Processor estimates that implementing the following index could improve query cost (146.722)
+by 96.3845% for 162 executions of the query over the last 0 hours.
+*/
+
+/* 
+USE [StackOverflow2010]
+GO
+
+CREATE NONCLUSTERED INDEX ix_PostTypeIdCreationDate_Includes
+ ON [dbo].[Posts] ([PostTypeId], [CreationDate])
+INCLUDE ([OwnerUserId], [Score]) WITH (FILLFACTOR=100, ONLINE=?, SORT_IN_TEMPDB=?, DATA_COMPRESSION=?);
+GO
+*/
+
+</MissingIndexes>","<?NoNeedToClickMe -- N/A --?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetTopAnswerers]  @From = '2010-07-27 00:00:00.000', @To = '2010-08-03 00:00:00.000'?>","162","8","1","21244","131","1","135665","837","3","34181783","210998","6","0","0","0","20","9328","9328","1160","8744","","0","1038","1038","6.41","10/30/2026 18:11:24","10/30/2026 18:31:19","10/30/2026 18:31:19","3 0 7 0 127 24 101 81 170 147 9 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""
+"StackOverflow2010","1.22544","CREATE   PROCEDURE app.GetUserByExternalId @ExternalContactId nvarchar(20) AS SET NOCOUNT ON; SELECT u.Id, u.DisplayName, u.Reputation, m.ExternalContactId, m.SyncedAt FROM dbo.CrmContactMap m JOIN dbo.Users u ON u.Id = m.UserId WHERE m.ExternalContactId = @ExternalContactId; ","Procedure or Function: [app].[GetUserByExternalId]","Plan Warnings, Implicit Conversions, Forced Serialization, Plan created last 4hrs","<?NoNeedToClickMe -- N/A --?>","<?ClickMe The stored procedure [app].[GetUserByExternalId] had the following implicit conversions: 
+
+The variable @ExternalContactId has a data type of nvarchar which caused implicit conversion on the column [m].[ExternalContactId] with the value N'CRM-00295519'.?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetUserByExternalId]  @ExternalContactId = N'CRM-00295519'?>","2349","117","16","43139","18","2","59407","25","1","2287926","974","0","0","0","0","1","0","0","0","0","","0","0","0","0.00","10/30/2026 18:11:23","10/30/2026 18:31:20","10/30/2026 18:31:20","3 0 7 0 155 135 148 77 96 176 43 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER",""
+"StackOverflow2010","1.22544","SELECT u.Id, u.DisplayName, u.Reputation, m.ExternalContactId, m.SyncedAt FROM dbo.CrmContactMap m JOIN dbo.Users u ON u.Id = m.UserId WHERE m.ExternalContactId = @ExternalContactId","Statement (parent [app].[GetUserByExternalId])","Plan Warnings, Implicit Conversions, Forced Serialization, Plan created last 4hrs","<?NoNeedToClickMe -- N/A --?>","<?ClickMe The stored procedure [app].[GetUserByExternalId] had the following implicit conversions: 
+
+The variable @ExternalContactId has a data type of nvarchar which caused implicit conversion on the column [m].[ExternalContactId] with the value N'CRM-00295519'.?>","<?ClickMe SET ANSI_NULLS ON 
+SET ANSI_PADDING ON 
+SET ANSI_WARNINGS ON 
+SET ARITHABORT OFF 
+SET CONCAT_NULL_YIELDS_NULL ON 
+SET NUMERIC_ROUNDABORT OFF 
+SET QUOTED_IDENTIFIER ON 
+
+
+EXEC [app].[GetUserByExternalId]  @ExternalContactId = N'CRM-00295519'?>","2349","117","16","43072","18","2","59291","25","1","2287926","974","0","0","0","0","1","0","0","0","0","0","0","0","0","0.00","10/30/2026 18:11:23","10/30/2026 18:31:20","10/30/2026 18:31:20","3 0 7 0 155 135 148 77 96 176 43 1 243 180 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"," ANSI_PADDING, CONCAT_NULL_YIELDS_NULL, ANSI_WARNINGS, ANSI_NULLS, QUOTED_IDENTIFIER","183 222 32 134 139 136 126 237"

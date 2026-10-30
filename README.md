@@ -13,6 +13,9 @@ Open `report/audit-report.html` in a browser to read the report. It prints to PD
 - Page-view writes stopped waiting on locks: 633 ms per call on average before, 0 ms after.
 - 34 test calls were compared row by row before and after each change. All of them match.
 
+The problems in this database were built in on purpose, one of each common kind, so the gains are large.
+On a real system, expect smaller gains, mostly from the top two or three queries.
+
 ## What is in it
 
 | Folder | What it holds |
@@ -20,6 +23,7 @@ Open `report/audit-report.html` in a browser to read the report. It prints to PD
 | `setup/` | Attach the database, build the "vendor app" on top of it, reset counters (lab only). |
 | `workload/` | `Run-Workload.ps1` plays the app's traffic. `results/` has the call counts of each run. |
 | `audit/` | Ten read-only diagnostic scripts and `Run-Audit.ps1`. `results/` is the baseline audit, `results-after/` the same audit after the fixes (script 10 was added after the baseline, so only `results-after/` has its output). |
+| `audit/Run-Blitz.ps1`, `audit/blitz-before/`, `audit/blitz-after/` | A cross-check with Brent Ozar's First Responder Kit 8.34 (not included; MIT license, install it from GitHub). Rows about other databases on the lab instance and the lab's host and user names are left out. |
 | `fixes/NN-name/` | One folder per fix: the change, its rollback, the test definition (`*.psd1`) and the measured result (`*.result.json`). |
 | `tools/` | `SqlBench.psm1` (run and measure SQL) and `Test-Fix.ps1` (prove a fix). |
 | `report/` | The HTML report and the script that builds it from the result files. |
@@ -69,6 +73,9 @@ sqlcmd -S .\SQLEXPRESS -E -C -i setup\03-reset-stats.sql
 pwsh -File workload\Run-Workload.ps1 -Minutes 20 -Workers 4 -OutFile workload\results\workload-run-after.csv
 pwsh -File audit\Run-Audit.ps1 -OutDir audit\results-after
 pwsh -File report\Build-Report.ps1
+
+# 6. Optional cross-check with the First Responder Kit (install it into master first, see audit\Run-Blitz.ps1)
+pwsh -File audit\Run-Blitz.ps1 -OutDir audit\blitz-after
 ```
 
 Your numbers will differ from mine with other hardware. The shape will not:

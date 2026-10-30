@@ -1,0 +1,4 @@
+"Pattern","Finding","More Info","Details"
+"Plan Cache","Plan cache not analyzed","Use @CheckProcedureCache = 1 or run sp_BlitzCache for more analysis","<?ClickToSeeDetails -- 
+firstresponderkit.org
+ -- ?>"

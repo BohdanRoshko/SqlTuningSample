@@ -154,6 +154,32 @@ $profile = 'app.GetUserProfile'
 $allIdentical = -not (@($f01, $f02, $f03, $f04, $f05, $f06) | Where-Object { -not $_.AllIdentical })
 $totalIdentityCalls = (@($f01, $f02, $f03, $f04, $f05, $f06) | ForEach-Object { @($_.Calls).Count } | Measure-Object -Sum).Sum
 
+# ---------- sp_Blitz cross-check ----------
+function Blitz([string]$dir, [string]$name) { Import-Csv (Join-Path $root "audit/$dir/$name.csv") }
+function Warn([string]$dir, [string]$proc) {
+    $rows = @(Blitz $dir 'sp_BlitzCache-cpu-1') + @(Blitz $dir 'sp_BlitzCache-reads-1')
+    $r = $rows | Where-Object { $_.'Query Type' -eq "Procedure or Function: [app].[$($proc.Replace('app.', ''))]" } | Select-Object -First 1
+    if (-not $r) { return 'not in its top 10' }
+    (($r.Warnings -split ',\s*') | Where-Object { $_ -notin @('Forced Serialization', 'Plan created last 4hrs') }) -join ', '
+}
+$bxRows = [System.Text.StringBuilder]::new()
+foreach ($pair in @(
+        @($tag, 'Fix 04'), @($search, 'Fix 04'), @($votes, 'Fix 01'), @($top, 'Fix 05'), @($crm, 'Fix 02'), @($month, 'Fix 03'))) {
+    [void]$bxRows.Append("<tr><td>$(Enc $pair[0])</td><td>$(Enc $pair[1])</td><td>$(Enc (Warn 'blitz-before' $pair[0]))</td><td>$(Enc (Warn 'blitz-after' $pair[0]))</td></tr>")
+}
+$blitzMissingBefore = @(Blitz 'blitz-before' 'sp_BlitzIndex' | Where-Object { $_.Finding -like '*Missing Index*' }).Count
+$blitzMissingAfter = @(Blitz 'blitz-after' 'sp_BlitzIndex' | Where-Object { $_.Finding -like '*Missing Index*' }).Count
+$blitzUnused = @(Blitz 'blitz-before' 'sp_BlitzIndex' | Where-Object { $_.Finding -like '*Unused*' }).Count
+$topWait = (Blitz 'blitz-before' 'sp_BlitzFirst-since-startup-1' | Select-Object -First 1).wait_type
+$extra = Blitz 'blitz-before' 'sp_Blitz' | Where-Object { [int]$_.Priority -ge 1 -and [int]$_.Priority -le 100 -and $_.FindingsGroup -notin @('DBCC Events') -and $_.Finding -notin @('Server restarted in last 24 hours', 'Unusual SQL Server Edition', 'Max Memory Set Too High') }
+$exRows = [System.Text.StringBuilder]::new()
+foreach ($g in ($extra | Group-Object Finding | Sort-Object { [int]$_.Group[0].Priority }, Name)) {
+    $first = $g.Group[0]
+    $dbs = ($g.Group | ForEach-Object { $_.DatabaseName } | Where-Object { $_ } | Sort-Object -Unique) -join ', '
+    [void]$exRows.Append("<tr><td>$(Enc $first.Priority)</td><td>$(Enc $first.Finding)</td><td>$(Enc $dbs)</td></tr>")
+}
+$blitzVersion = (Get-Content (Join-Path $root 'audit/blitz-before/captured-at.txt')) -replace '^Captured at [\d\- :]+ with ', ''
+
 # ---------- workload comparison table ----------
 $procOrder = @($tag, $votes, $search, $crm, $month, $top, $profile, 'app.GetQuestionPage', 'app.RecordPostView', 'app.CastVote')
 $wl = [System.Text.StringBuilder]::new()
@@ -207,6 +233,7 @@ $html = @"
   .facts div:nth-child(odd) { color: var(--muted); }
   .ok { color: var(--good); font-weight: 600; }
   .note { font-size: 13px; color: var(--muted); }
+  .callout { border-left: 4px solid var(--warn); background: #fff7ea; padding: 8px 12px; font-size: 14px; }
   code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 12.5px; background: var(--soft); padding: 1px 4px; border-radius: 3px; }
   ul { margin: 0 0 10px; padding-left: 20px; }
   li { margin: 3px 0; }
@@ -228,6 +255,7 @@ $html = @"
 <h2>Summary</h2>
 <p><strong>Six changes cut the CPU of the app's calls by $(N $cpuCut 0)% and their logical reads by $(N $readsCut 0)%. In the same 20 minutes, the same four workers finished $(N ($totalCallsAfter/$totalCallsBefore) 0) times as many calls.</strong>
 No query returns a different answer: $totalIdentityCalls test calls were compared row by row before and after.</p>
+<p class="callout">This is a sample on public data. The problems in it were built in on purpose, one of each common kind, so the gains are large. On a real system, expect smaller gains, mostly from the top two or three queries.</p>
 <p>Two procedures used $(N ((Share $tag) + (Share $votes)) 0)% of all CPU. The tag page read the whole $postsGb GB posts table on every call. The vote counter scanned all $votesM million votes to count the votes of one post.
 Both now read a small index. Page views no longer wait behind the tag page: their writes waited $(Ms $pvLockBefore) on average before, and $(Ms $pvLockAfter) after.</p>
 <p>All six changes are indexes or small procedure edits. None needs an application release. Each one has a rollback script. Most of them touch objects the app vendor owns, so section 5 lists what to clear with them first.</p>
@@ -348,8 +376,8 @@ Both now read a small index. Page views no longer wait behind the tag page: thei
 <thead><tr><th>Setting</th><th>Now</th><th>What it means</th><th>Advice</th></tr></thead>
 <tbody>
 <tr><td>Max server memory</td><td>$(N $cfg['max server memory (MB)']) MB</td><td>No cap. Express limits the buffer pool to about 1.4 GB anyway: $(N $mem.buffer_pool_mb_total) MB in use against a $(N $mem.data_file_mb) MB data file.</td><td>On a full edition, cap it and leave the OS a few GB. On Express, the fixes above matter more because memory cannot grow.</td></tr>
-<tr><td>MAXDOP</td><td>$($cfg['max degree of parallelism'])</td><td>One query may use every core.</td><td>Set it to the cores per NUMA node, at most 8.</td></tr>
-<tr><td>Cost threshold for parallelism</td><td>$($cfg['cost threshold for parallelism'])</td><td>The original default. Small queries go parallel.</td><td>Start at 50 and check Query Store after a week.</td></tr>
+<tr><td>MAXDOP</td><td>$($cfg['max degree of parallelism'])</td><td>One query may use every core. Express never builds parallel plans, so here it changes nothing: every plan says <code>NoParallelPlansInDesktopOrExpressEdition</code>.</td><td>On Standard or Enterprise, set it to the cores per NUMA node, at most 8.</td></tr>
+<tr><td>Cost threshold for parallelism</td><td>$($cfg['cost threshold for parallelism'])</td><td>The original default. On a full edition, small queries go parallel. No effect on Express.</td><td>On Standard or Enterprise, start at 50 and check Query Store after a week.</td></tr>
 <tr><td>Compatibility level</td><td>$($db.compatibility_level)</td><td>The optimizer behaves like SQL Server 2008. Newer features that soften parameter sniffing and memory grants are off.</td><td>Raise it only with the vendor and a test run. Query Store can force the old plans back if one regresses.</td></tr>
 <tr><td>Read committed snapshot</td><td>$(if ($db.is_read_committed_snapshot_on -eq 'True') { 'on' } else { 'off' })</td><td>Readers and writers block each other. That is how the tag page held up page views.</td><td>Ask the vendor if the app supports it. It removes this whole class of waits.</td></tr>
 <tr><td>Query Store</td><td>on</td><td>The source of most numbers in this report.</td><td>Keep it on.</td></tr>
@@ -367,13 +395,25 @@ Both now read a small index. Page views no longer wait behind the tag page: thei
 <li><strong>Read committed snapshot and the compatibility level.</strong> Both are database settings the vendor should confirm they support.</li>
 </ul>
 
-<h2>6. How this was done</h2>
+<h2>6. Cross-check with sp_Blitz</h2>
+<p>Most SQL Server consultants use Brent Ozar's free First Responder Kit, so a client may ask for its output. I ran $(Enc $blitzVersion) on the same database twice. First on the baseline: every fix rolled back, the same 20-minute workload, then <code>sp_Blitz</code>, <code>sp_BlitzFirst</code>, <code>sp_BlitzCache</code> and <code>sp_BlitzIndex</code>. Then again with all fixes applied. The output is in <code>audit/blitz-before</code> and <code>audit/blitz-after</code>.</p>
+<p><strong>It agrees on the big ones.</strong> Its top wait was <code>$(Enc $topWait)</code>, the same lock wait this report found. It listed $blitzMissingBefore high-value missing indexes before the fixes and $blitzMissingAfter after. Its plan warnings per procedure:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Procedure</th><th>Fixed by</th><th>sp_BlitzCache warnings before</th><th>After</th></tr></thead>
+<tbody>$($bxRows.ToString())</tbody></table></div>
+<p><strong>It missed two things this report found.</strong> It did not flag the YEAR()/MONTH() filter in the month report. And sp_BlitzIndex did not list the unused index ($blitzUnused unused-index findings), I think because the server had been up only a few hours. Its warnings are hints. Each one still needs a look at the plan.</p>
+<p><strong>It found things this audit does not look at.</strong> My scripts cover performance only. <code>sp_Blitz</code> also checks reliability:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Priority</th><th>sp_Blitz finding</th><th>Database</th></tr></thead>
+<tbody>$($exRows.ToString())</tbody></table></div>
+<p>On this lab box no backups and no CHECKDB are expected. On a client server they come before any tuning: a fast database that cannot be restored is the bigger risk. A real engagement runs <code>sp_Blitz</code> first and reports these at the top.</p>
+<h2>7. How this was done</h2>
 <ul>
 <li>Read-only access was enough for the audit: <code>VIEW SERVER STATE</code> and <code>VIEW DATABASE STATE</code>. Ten scripts collect settings, waits, file latency, Query Store top queries with their waits and tempdb use, index usage, missing-index hints, plan warnings and parameter sensitivity.</li>
 <li>The fixes were tested on a copy, never on the live server. A fix is done when every row matches, not when it "should" match.</li>
 <li>Fewer reads at a higher elapsed time counts as a regression, not a win.</li>
 <li>A rewrite that uses existing indexes comes before a new index. Every index here has its build time and write cost next to it.</li>
-<li>The database is the public StackOverflow2010 copy (Stack Exchange data dump, cc-by-sa 4.0) with a small app built on top of it to play a vendor system. Every number comes from a run in this repository, and the scripts reproduce it.</li>
+<li>The database is the public StackOverflow2010 copy (Stack Exchange data dump, cc-by-sa 4.0) with a small app built on top of it to play a vendor system. Its problems were planted on purpose. Every number comes from a run in this repository, and the scripts reproduce it.</li>
 </ul>
 <p class="note">Lab: SQL Server 2025 ($(Enc $box.product_version)) $(Enc $box.edition), $($box.cpu_count) cores, $(N ($box.physical_memory_mb/1024) 0) GB RAM, NVMe SSD.</p>
 
