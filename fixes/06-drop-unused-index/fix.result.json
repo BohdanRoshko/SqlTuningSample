@@ -1,0 +1,413 @@
+{
+  "Fix": "06-drop-unused-index",
+  "Title": "Drop the unused index: page views and votes stop maintaining it",
+  "MeasuredAt": "2026-10-30 17:22",
+  "Runs": 9,
+  "ApplySeconds": 0.0,
+  "Method": "Median of warm runs, SET STATISTICS IO, TIME. Identity: EXCEPT both ways on every row, row order included.",
+  "AllIdentical": true,
+  "Calls": [
+    {
+      "Label": "write: record a page view",
+      "BeforeSql": "BEGIN TRAN; EXEC app.RecordPostView @PostId = 1000080; ROLLBACK;",
+      "AfterSql": "BEGIN TRAN; EXEC app.RecordPostView @PostId = 1000080; ROLLBACK;",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 7.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 7,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 7,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 7,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 7,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 7,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 7,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 7,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 7,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 7,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 4.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 4,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          }
+        ]
+      },
+      "ReadsCutPct": 42.9,
+      "CpuCutPct": null,
+      "ElapsedCutPct": null,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "write: record a page view",
+        "RowsBefore": 0,
+        "RowsAfter": 0,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": null,
+        "ChecksumAfter": null,
+        "Identical": true,
+        "EmptyBothSides": true
+      }
+    },
+    {
+      "Label": "write: cast an up-vote",
+      "BeforeSql": "BEGIN TRAN; EXEC app.CastVote @PostId = 1000080, @UserId = 22656, @VoteTypeId = 2; ROLLBACK;",
+      "AfterSql": "BEGIN TRAN; EXEC app.CastVote @PostId = 1000080, @UserId = 22656, @VoteTypeId = 2; ROLLBACK;",
+      "Setup": null,
+      "Before": {
+        "LogicalReads": 19.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 19,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 19,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 19,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 19,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 19,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 19,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 19,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 19,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 19,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 16.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 0.0,
+        "Rows": 0,
+        "Detail": [
+          {
+            "LogicalReads": 16,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 16,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 16,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 16,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 16,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 16,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 1,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 16,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 16,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          },
+          {
+            "LogicalReads": 16,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 0,
+            "ClientMs": 0,
+            "Rows": 0
+          }
+        ]
+      },
+      "ReadsCutPct": 15.8,
+      "CpuCutPct": null,
+      "ElapsedCutPct": null,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "write: cast an up-vote",
+        "RowsBefore": 0,
+        "RowsAfter": 0,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": null,
+        "ChecksumAfter": null,
+        "Identical": true,
+        "EmptyBothSides": true
+      }
+    }
+  ]
+}

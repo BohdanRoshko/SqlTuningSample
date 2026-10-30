@@ -1,0 +1,7 @@
+Changed database context to 'StackOverflow2010'.
+plans_in_query_store plans_that_read_it plans_that_maintain_it maintained_by
+-------------------- ------------------ ---------------------- -------------
+70 0 3 app.RecordPostView, app.CastVote, app.CastVote
+name seeks scans lookups writes
+---- ----- ----- ------- ------
+IX_Posts_LastActivityDate 0 0 0 0

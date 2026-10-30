@@ -3,6 +3,7 @@
     Read-only. Run in the user database. Looks at the latest plan of every query from a procedure.  */
 USE StackOverflow2010;
 SET NOCOUNT ON;
+SET QUOTED_IDENTIFIER ON;   -- XML methods need it; sqlcmd defaults it to OFF
 
 WITH XMLNAMESPACES (DEFAULT 'http://schemas.microsoft.com/sqlserver/2004/07/showplan'),
 plans AS (
