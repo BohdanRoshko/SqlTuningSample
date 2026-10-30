@@ -1,0 +1,785 @@
+{
+  "Fix": "05-top-answerers-sniffing",
+  "Title": "Top answerers report: cost no longer depends on which range ran first",
+  "MeasuredAt": "2026-10-30 17:21",
+  "Runs": 5,
+  "ApplySeconds": 76.7,
+  "Method": "Median of warm runs, SET STATISTICS IO, TIME. Identity: EXCEPT both ways on every row, row order included.",
+  "AllIdentical": true,
+  "Calls": [
+    {
+      "Label": "year, after a day plan",
+      "BeforeSql": "EXEC app.GetTopAnswerers @From = '2010-01-01', @To = '2011-01-01'",
+      "AfterSql": "EXEC app.GetTopAnswerers @From = '2010-01-01', @To = '2011-01-01'",
+      "Setup": "EXEC sp_recompile N'app.GetTopAnswerers'; EXEC app.GetTopAnswerers @From = '2010-06-01', @To = '2010-06-02';",
+      "Before": {
+        "LogicalReads": 8791501.0,
+        "PhysicalReads": 6.0,
+        "CpuMs": 4547.0,
+        "ElapsedMs": 24093.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 8790993,
+            "PhysicalReads": 6,
+            "ReadAheadReads": 453328,
+            "CpuMs": 4375,
+            "ElapsedMs": 24174,
+            "ClientMs": 24175,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 8791258,
+            "PhysicalReads": 6,
+            "ReadAheadReads": 453303,
+            "CpuMs": 4703,
+            "ElapsedMs": 24093,
+            "ClientMs": 24095,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 8791744,
+            "PhysicalReads": 6,
+            "ReadAheadReads": 453302,
+            "CpuMs": 4172,
+            "ElapsedMs": 24058,
+            "ClientMs": 24060,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 8791986,
+            "PhysicalReads": 6,
+            "ReadAheadReads": 453226,
+            "CpuMs": 4547,
+            "ElapsedMs": 24038,
+            "ClientMs": 24039,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 8791501,
+            "PhysicalReads": 6,
+            "ReadAheadReads": 453226,
+            "CpuMs": 4844,
+            "ElapsedMs": 24711,
+            "ClientMs": 24712,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 3384.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 454.0,
+        "ElapsedMs": 588.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 3384,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 5556,
+            "CpuMs": 422,
+            "ElapsedMs": 581,
+            "ClientMs": 582,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 3384,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 5556,
+            "CpuMs": 421,
+            "ElapsedMs": 592,
+            "ClientMs": 593,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 3384,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 5556,
+            "CpuMs": 454,
+            "ElapsedMs": 588,
+            "ClientMs": 589,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 3384,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 5556,
+            "CpuMs": 484,
+            "ElapsedMs": 579,
+            "ClientMs": 580,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 3384,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 5556,
+            "CpuMs": 500,
+            "ElapsedMs": 635,
+            "ClientMs": 636,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 100.0,
+      "CpuCutPct": 90.0,
+      "ElapsedCutPct": 97.6,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "year, after a day plan",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": 1337556514,
+        "ChecksumAfter": 1337556514,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "month, after a day plan",
+      "BeforeSql": "EXEC app.GetTopAnswerers @From = '2010-03-01', @To = '2010-04-01'",
+      "AfterSql": "EXEC app.GetTopAnswerers @From = '2010-03-01', @To = '2010-04-01'",
+      "Setup": "EXEC sp_recompile N'app.GetTopAnswerers'; EXEC app.GetTopAnswerers @From = '2010-06-01', @To = '2010-06-02';",
+      "Before": {
+        "LogicalReads": 475893.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 125.0,
+        "ElapsedMs": 156.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 475893,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 314,
+            "CpuMs": 125,
+            "ElapsedMs": 152,
+            "ClientMs": 153,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 475893,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 314,
+            "CpuMs": 156,
+            "ElapsedMs": 150,
+            "ClientMs": 151,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 475893,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 314,
+            "CpuMs": 110,
+            "ElapsedMs": 160,
+            "ClientMs": 161,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 475893,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 314,
+            "CpuMs": 125,
+            "ElapsedMs": 156,
+            "ClientMs": 157,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 475893,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 314,
+            "CpuMs": 125,
+            "ElapsedMs": 165,
+            "ClientMs": 166,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 334.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 47.0,
+        "ElapsedMs": 45.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 334,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 234,
+            "CpuMs": 47,
+            "ElapsedMs": 44,
+            "ClientMs": 45,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 334,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 234,
+            "CpuMs": 47,
+            "ElapsedMs": 47,
+            "ClientMs": 48,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 334,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 234,
+            "CpuMs": 47,
+            "ElapsedMs": 45,
+            "ClientMs": 46,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 334,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 234,
+            "CpuMs": 31,
+            "ElapsedMs": 44,
+            "ClientMs": 45,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 334,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 234,
+            "CpuMs": 47,
+            "ElapsedMs": 46,
+            "ClientMs": 47,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 99.9,
+      "CpuCutPct": 62.4,
+      "ElapsedCutPct": 71.2,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "month, after a day plan",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": -757535054,
+        "ChecksumAfter": -757535054,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "day, after a year plan",
+      "BeforeSql": "EXEC app.GetTopAnswerers @From = '2010-06-01', @To = '2010-06-02'",
+      "AfterSql": "EXEC app.GetTopAnswerers @From = '2010-06-01', @To = '2010-06-02'",
+      "Setup": "EXEC sp_recompile N'app.GetTopAnswerers'; EXEC app.GetTopAnswerers @From = '2010-01-01', @To = '2011-01-01';",
+      "Before": {
+        "LogicalReads": 6501.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 547.0,
+        "ElapsedMs": 564.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 6501,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 500,
+            "ElapsedMs": 540,
+            "ClientMs": 541,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 6501,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 562,
+            "ElapsedMs": 564,
+            "ClientMs": 565,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 6501,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 531,
+            "ElapsedMs": 570,
+            "ClientMs": 571,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 6501,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 547,
+            "ElapsedMs": 582,
+            "ClientMs": 583,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 6501,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 547,
+            "ElapsedMs": 542,
+            "ClientMs": 543,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 84.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 2.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 84,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 2,
+            "ClientMs": 3,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 84,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 3,
+            "ClientMs": 3,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 84,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 2,
+            "ClientMs": 3,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 84,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 2,
+            "ClientMs": 3,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 84,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 3,
+            "ClientMs": 4,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 98.7,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 99.6,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "day, after a year plan",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": 1043810397,
+        "ChecksumAfter": 1043810397,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "day, own plan",
+      "BeforeSql": "EXEC app.GetTopAnswerers @From = '2009-09-14', @To = '2009-09-15'",
+      "AfterSql": "EXEC app.GetTopAnswerers @From = '2009-09-14', @To = '2009-09-15'",
+      "Setup": "EXEC sp_recompile N'app.GetTopAnswerers';",
+      "Before": {
+        "LogicalReads": 12671.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 10.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 12671,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 12671,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 9,
+            "ClientMs": 10,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 12671,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 9,
+            "ClientMs": 10,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 12671,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 12671,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 16,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 82.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 4.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 82,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 4,
+            "ClientMs": 5,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 82,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 5,
+            "ClientMs": 6,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 82,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 4,
+            "ClientMs": 5,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 82,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 4,
+            "ClientMs": 5,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 82,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 15,
+            "ElapsedMs": 4,
+            "ClientMs": 5,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 99.4,
+      "CpuCutPct": null,
+      "ElapsedCutPct": 60.0,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "day, own plan",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": 1967754869,
+        "ChecksumAfter": 1967754869,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "week, own plan",
+      "BeforeSql": "EXEC app.GetTopAnswerers @From = '2009-09-14', @To = '2009-09-21'",
+      "AfterSql": "EXEC app.GetTopAnswerers @From = '2009-09-14', @To = '2009-09-21'",
+      "Setup": "EXEC sp_recompile N'app.GetTopAnswerers';",
+      "Before": {
+        "LogicalReads": 6531.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 329.0,
+        "ElapsedMs": 368.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 6531,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 328,
+            "ElapsedMs": 364,
+            "ClientMs": 365,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 6531,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 359,
+            "ElapsedMs": 373,
+            "ClientMs": 374,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 6531,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 328,
+            "ElapsedMs": 368,
+            "ClientMs": 369,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 6531,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 329,
+            "ElapsedMs": 369,
+            "ClientMs": 370,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 6531,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 359,
+            "ElapsedMs": 366,
+            "ClientMs": 366,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 119.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 0.0,
+        "ElapsedMs": 9.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 119,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 9,
+            "ClientMs": 10,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 119,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 9,
+            "ClientMs": 10,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 119,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 9,
+            "ClientMs": 10,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 119,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 10,
+            "ClientMs": 11,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 119,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 0,
+            "ElapsedMs": 9,
+            "ClientMs": 9,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 98.2,
+      "CpuCutPct": 100.0,
+      "ElapsedCutPct": 97.6,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "week, own plan",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": 1680525723,
+        "ChecksumAfter": 1680525723,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    },
+    {
+      "Label": "year, own plan",
+      "BeforeSql": "EXEC app.GetTopAnswerers @From = '2009-01-01', @To = '2010-01-01'",
+      "AfterSql": "EXEC app.GetTopAnswerers @From = '2009-01-01', @To = '2010-01-01'",
+      "Setup": "EXEC sp_recompile N'app.GetTopAnswerers';",
+      "Before": {
+        "LogicalReads": 8320.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 1032.0,
+        "ElapsedMs": 1146.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 8320,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1032,
+            "ElapsedMs": 1176,
+            "ClientMs": 1177,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 8320,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1015,
+            "ElapsedMs": 1173,
+            "ClientMs": 1173,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 8320,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1032,
+            "ElapsedMs": 1146,
+            "ClientMs": 1147,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 8320,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1093,
+            "ElapsedMs": 1141,
+            "ClientMs": 1142,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 8320,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 1078,
+            "ElapsedMs": 1134,
+            "ClientMs": 1135,
+            "Rows": 20
+          }
+        ]
+      },
+      "After": {
+        "LogicalReads": 2186.0,
+        "PhysicalReads": 0.0,
+        "CpuMs": 187.0,
+        "ElapsedMs": 193.0,
+        "Rows": 20,
+        "Detail": [
+          {
+            "LogicalReads": 2186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 203,
+            "ElapsedMs": 193,
+            "ClientMs": 194,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 2186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 193,
+            "ClientMs": 194,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 2186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 172,
+            "ElapsedMs": 196,
+            "ClientMs": 197,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 2186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 187,
+            "ElapsedMs": 184,
+            "ClientMs": 185,
+            "Rows": 20
+          },
+          {
+            "LogicalReads": 2186,
+            "PhysicalReads": 0,
+            "ReadAheadReads": 0,
+            "CpuMs": 188,
+            "ElapsedMs": 192,
+            "ClientMs": 193,
+            "Rows": 20
+          }
+        ]
+      },
+      "ReadsCutPct": 73.7,
+      "CpuCutPct": 81.9,
+      "ElapsedCutPct": 83.2,
+      "ElapsedRegression": false,
+      "Identity": {
+        "Label": "year, own plan",
+        "RowsBefore": 20,
+        "RowsAfter": 20,
+        "OnlyBefore": 0,
+        "OnlyAfter": 0,
+        "ChecksumBefore": 468721400,
+        "ChecksumAfter": 468721400,
+        "Identical": true,
+        "EmptyBothSides": false
+      }
+    }
+  ]
+}
