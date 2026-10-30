@@ -1,0 +1,7 @@
+# Database files, downloads and backups stay out of git
+_data/
+*.mdf
+*.ldf
+*.ndf
+*.bak
+*.7z
