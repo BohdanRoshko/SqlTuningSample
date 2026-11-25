@@ -4,7 +4,11 @@ This repository is a complete weekend performance audit, done on public data.
 It shows what a client gets: the scripts that were run, the raw output, the fixes
 with before and after numbers, and the report.
 
-Open `report/audit-report.html` in a browser to read the report. It prints to PDF.
+**Read the report: [report/audit-report.pdf](report/audit-report.pdf)**
+
+[![First page of the audit report](report/audit-report.png)](report/audit-report.pdf)
+
+The same report is in `report/audit-report.html`, built from the result files by `report/Build-Report.ps1`.
 
 ## Results
 
